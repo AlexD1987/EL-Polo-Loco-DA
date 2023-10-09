@@ -12,12 +12,17 @@ class World {
         new Ground('img/5_background/layers/air.png', 0),
         new Ground('img/5_background/layers/3_third_layer/1.png', 0),
         new Ground('img/5_background/layers/2_second_layer/1.png', 0),
-        new Ground('img/5_background/layers/1_first_layer/1.png', 0)
+        new Ground('img/5_background/layers/1_first_layer/1.png', 0),
+        new Ground('img/5_background/layers/air.png', 719),
+        new Ground('img/5_background/layers/3_third_layer/2.png', 719),
+        new Ground('img/5_background/layers/2_second_layer/2.png', 719),
+        new Ground('img/5_background/layers/1_first_layer/2.png', 719)
     ];
 
     canvas;
     keyboard;
     ctx;
+    camera_x = 0;
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -32,13 +37,15 @@ class World {
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-        
+        this.ctx.translate(this.camera_x, 0);
+
         this.addObjectsToMap(this.backgroundObject);
         this.addObjectsToMap(this.clouds);
         this.addToMap(this.character);
         this.addObjectsToMap(this.enemy);
+
+        this.ctx.translate(-this.camera_x, 0);
             
-        
         // Draw wird immer wieder aufgerufen
         let self = this;
         requestAnimationFrame(function() {
