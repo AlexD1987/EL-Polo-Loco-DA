@@ -3,6 +3,9 @@ class Character extends MovableObject {
     height = 250;
     speed = 5;
 
+    isMoving = false; // Eine Variable, um den Bewegungszustand des Charakters zu verfolgen
+    sleepTime = false;
+
     IMAGES_WALKING = [
         'img/2_character_pepe/2_walk/W-21.png',
         'img/2_character_pepe/2_walk/W-22.png',
@@ -52,27 +55,26 @@ class Character extends MovableObject {
     }
 
     animate() {
-        let isMoving = false; // Eine Variable, um den Bewegungszustand des Charakters zu verfolgen
+
 
         setInterval(() => {
-            if (this.world.keyboard.RIGHT) {
+            if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
                 this.x += this.speed;
                 this.otherDirection = false;
-                isMoving = true; // Der Charakter bewegt sich nach rechts
-            } else if (this.world.keyboard.LEFT) {
+                this.isMoving = true; // Der Charakter bewegt sich nach rechts
+            } else if (this.world.keyboard.LEFT && this.x > 0) {
                 this.x -= this.speed;
                 this.otherDirection = true;
-                isMoving = true; // Der Charakter bewegt sich nach links
+                this.isMoving = true; // Der Charakter bewegt sich nach links
             } else {
-                isMoving = false; // Der Charakter bewegt sich nicht
-                startTimer = Date.now();
+                this.isMoving = false; // Der Charakter bewegt sich nicht
             }
-            
-            this.world.camera_x = -this.x;
+
+            this.world.camera_x = -this.x + 100;
         }, 1000 / 30);
 
         setInterval(() => {
-            if (isMoving) {
+            if (this.isMoving) {
                 let i = this.currentImage % this.IMAGES_WALKING.length;
                 let path = this.IMAGES_WALKING[i];
                 this.img = this.imageChache[path];
@@ -81,7 +83,7 @@ class Character extends MovableObject {
         }, 50);
 
         setInterval(() => {
-            if (!isMoving) {
+            if (!this.isMoving) {
                 let i = this.currentImage % this.IMAGES_WAITING.length;
                 let path = this.IMAGES_WAITING[i];
                 this.img = this.imageChache[path];
