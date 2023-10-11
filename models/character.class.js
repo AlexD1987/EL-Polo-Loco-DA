@@ -84,12 +84,17 @@ class Character extends MovableObject {
         }, 50);
 
         setInterval(() => {
-            if (!this.isMoving) {
+            do {
                 let i = this.currentImage % this.IMAGES_WAITING.length;
                 let path = this.IMAGES_WAITING[i];
                 this.img = this.imageChache[path];
                 this.currentImage++;
-            }
+            } while (!this.sleepTime) {
+                let i = this.currentImage % this.IMAGES_SLEEPING.length;
+                let path = this.IMAGES_SLEEPING[i];
+                this.img = this.imageChache[path];
+                this.currentImage++;
+            };
         }, 350);
     }
 }
