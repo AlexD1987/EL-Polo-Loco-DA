@@ -23,6 +23,13 @@ class MovableObject {
         });
     }
 
+    playAnimation(image) {
+        let i = this.currentImage % image.length;
+                let path = image[i];
+                this.img = this.imageChache[path];
+                this.currentImage++;
+    }
+
     moveRight() {
         setInterval (() => {
             this.x += this.speed;
@@ -33,5 +40,12 @@ class MovableObject {
         setInterval(() => {
             this.x -= this.speed;
         }, 1000 / 60);
+    }
+
+    playAnimation(image) {
+        let i = this.currentImage % image.length;
+                let path = image[i];
+                this.img = this.imageChache[path];
+                this.currentImage++;
     }
 }

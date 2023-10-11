@@ -42,7 +42,8 @@ class Character extends MovableObject {
     ];
 
     world;
-    walking_sound = new Audio('audio/walking.mp3');
+    walking_sound = new Audio('audio/walk.mp3');
+    snoring_sound = new Audio('audio/snoring.mp3');
 
 
     constructor() {
@@ -62,19 +63,24 @@ class Character extends MovableObject {
             clearTimeout(sleepTimeout);
             sleepTimeout = setTimeout(() => {
                 this.sleepTime = true;
-            }, 10000);
+            }, 12000);
         };
     
         setInterval(() => {
+            this.walking_sound.pause();
+            this.snoring_sound.pause();
+
             if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
                 this.x += this.speed;
                 this.otherDirection = false;
                 this.isMoving = true;
+                this.walking_sound.play();
                 resetSleepTimer(); // Wenn sich der Charakter bewegt, wird der Timer zurückgesetzt
             } else if (this.world.keyboard.LEFT && this.x > 0) {
                 this.x -= this.speed;
                 this.otherDirection = true;
                 this.isMoving = true;
+                this.walking_sound.play();
                 resetSleepTimer(); // Wenn sich der Charakter bewegt, wird der Timer zurückgesetzt
             } else {
                 this.isMoving = false;
@@ -86,30 +92,21 @@ class Character extends MovableObject {
         setInterval(() => {
             if (this.isMoving) {
                 this.sleepTime = false;
-                let i = this.currentImage % this.IMAGES_WALKING.length;
-                let path = this.IMAGES_WALKING[i];
-                this.img = this.imageChache[path];
-                this.currentImage++;
+                this.playAnimation(this.IMAGES_WALKING);
             }
         }, 50);
     
         setInterval(() => {
             if (!this.isMoving) {
                 if (this.sleepTime) {
-                    let i = this.currentImage % this.IMAGES_SLEEPING.length;
-                    let path = this.IMAGES_SLEEPING[i];
-                    this.img = this.imageChache[path];
-                    this.currentImage++;
+                    this.playAnimation(this.IMAGES_SLEEPING);
+                    this.snoring_sound.play();
                 } else {
-                    let i = this.currentImage % this.IMAGES_WAITING.length;
-                    let path = this.IMAGES_WAITING[i];
-                    this.img = this.imageChache[path];
-                    this.currentImage++;
+                    this.playAnimation(this.IMAGES_WAITING);
                 }
             }
         }, 350);
     
         resetSleepTimer();
     }
-    
 }
