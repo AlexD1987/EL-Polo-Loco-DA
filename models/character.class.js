@@ -56,45 +56,60 @@ class Character extends MovableObject {
     }
 
     animate() {
-
-
+        let sleepTimeout;
+    
+        const resetSleepTimer = () => {
+            clearTimeout(sleepTimeout);
+            sleepTimeout = setTimeout(() => {
+                this.sleepTime = true;
+            }, 10000);
+        };
+    
         setInterval(() => {
             if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
                 this.x += this.speed;
                 this.otherDirection = false;
-                this.isMoving = true; // Der Charakter bewegt sich nach rechts
+                this.isMoving = true;
+                resetSleepTimer(); // Wenn sich der Charakter bewegt, wird der Timer zurückgesetzt
             } else if (this.world.keyboard.LEFT && this.x > 0) {
                 this.x -= this.speed;
                 this.otherDirection = true;
-                this.isMoving = true; // Der Charakter bewegt sich nach links
+                this.isMoving = true;
+                resetSleepTimer(); // Wenn sich der Charakter bewegt, wird der Timer zurückgesetzt
             } else {
-                this.isMoving = false; // Der Charakter bewegt sich nicht
+                this.isMoving = false;
             }
-
+    
             this.world.camera_x = -this.x + 100;
         }, 1000 / 30);
-
+    
         setInterval(() => {
             if (this.isMoving) {
+                this.sleepTime = false;
                 let i = this.currentImage % this.IMAGES_WALKING.length;
                 let path = this.IMAGES_WALKING[i];
                 this.img = this.imageChache[path];
                 this.currentImage++;
             }
         }, 50);
-
+    
         setInterval(() => {
-            do {
-                let i = this.currentImage % this.IMAGES_WAITING.length;
-                let path = this.IMAGES_WAITING[i];
-                this.img = this.imageChache[path];
-                this.currentImage++;
-            } while (!this.sleepTime) {
-                let i = this.currentImage % this.IMAGES_SLEEPING.length;
-                let path = this.IMAGES_SLEEPING[i];
-                this.img = this.imageChache[path];
-                this.currentImage++;
-            };
+            if (!this.isMoving) {
+                if (this.sleepTime) {
+                    let i = this.currentImage % this.IMAGES_SLEEPING.length;
+                    let path = this.IMAGES_SLEEPING[i];
+                    this.img = this.imageChache[path];
+                    this.currentImage++;
+                } else {
+                    let i = this.currentImage % this.IMAGES_WAITING.length;
+                    let path = this.IMAGES_WAITING[i];
+                    this.img = this.imageChache[path];
+                    this.currentImage++;
+                }
+            }
         }, 350);
+    
+        resetSleepTimer();
     }
+    
 }
