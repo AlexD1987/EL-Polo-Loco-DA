@@ -12,7 +12,7 @@ class Sun extends MovableObject {
         super().loadImage('img/5_background/layers/sun.png');
         this.loadImages(this.IMAGES_ANIMATION);
 
-        this.x = Math.random() * 2000;
+        this.x = Math.random() * 3000;
         this.animate();
     }
 

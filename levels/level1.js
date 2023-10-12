@@ -7,7 +7,9 @@ const level1 = new Level(
     ],
     [
         new Sun(),
-        new Cloud()
+        new Cloud(),
+        new Tumble(),
+        new Tumble()
     ],
     [
         new Ground('img/5_background/layers/air.png', -719),
