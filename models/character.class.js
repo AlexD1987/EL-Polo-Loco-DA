@@ -68,19 +68,20 @@ class Character extends MovableObject {
     
         setInterval(() => {
             this.walking_sound.pause();
-            this.snoring_sound.pause();
-
+        
             if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
                 this.x += this.speed;
                 this.otherDirection = false;
                 this.isMoving = true;
                 this.walking_sound.play();
+                this.snoring_sound.pause();
                 resetSleepTimer(); // Wenn sich der Charakter bewegt, wird der Timer zurückgesetzt
             } else if (this.world.keyboard.LEFT && this.x > 0) {
                 this.x -= this.speed;
                 this.otherDirection = true;
                 this.isMoving = true;
                 this.walking_sound.play();
+                this.snoring_sound.pause();
                 resetSleepTimer(); // Wenn sich der Charakter bewegt, wird der Timer zurückgesetzt
             } else {
                 this.isMoving = false;
