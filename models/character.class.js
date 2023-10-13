@@ -95,7 +95,7 @@ class Character extends MovableObject {
                 this.sleepTime = false;
                 this.playAnimation(this.IMAGES_WALKING);
             }
-        }, 50);
+        }, 90);
     
         setInterval(() => {
             if (!this.isMoving) {

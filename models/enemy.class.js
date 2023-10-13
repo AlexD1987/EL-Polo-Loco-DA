@@ -14,7 +14,7 @@ class Enemy extends MovableObject {
         super().loadImage('img/3_enemies_chicken/chicken_normal/1_walk/1_w.png')
         this.loadImages(this.IMAGES_WALKING);
 
-        this.x = 500 + Math.random() * 500;
+        this.x = 1000 + Math.random() * 719 * 7;
         this.y = this.y + 90;
         this.speed = 0.15 + Math.random() * 0.5;
         

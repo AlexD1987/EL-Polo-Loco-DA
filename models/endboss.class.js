@@ -18,7 +18,6 @@ class Endboss extends MovableObject {
         this.x = 719 * 8;
 
         this.animate();
-
     }
 
     animate() {
@@ -26,5 +25,4 @@ class Endboss extends MovableObject {
             this.playAnimation(this.IMAGES_WALKING);
         }, 200);
     }
-
 }

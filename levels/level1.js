@@ -1,5 +1,24 @@
+const chickenArmy = 15;
+const chicken = Array.from({length: chickenArmy}, () => new Enemy());
+
+
 const level1 = new Level(
     [
+        new Enemy(),
+        new Enemy(),
+        new Enemy(),
+        new Enemy(),
+        new Enemy(),
+        new Enemy(),
+        new Enemy(),
+        new Enemy(),
+        new Enemy(),
+        new Enemy(),
+        new Enemy(),
+        new Enemy(),
+        new Enemy(),
+        new Enemy(),
+        new Enemy(),
         new Enemy(),
         new Enemy(),
         new Enemy(),
@@ -8,8 +27,30 @@ const level1 = new Level(
     [
         new Sun(),
         new Cloud(),
+        new Cloud(),
+        new Cloud(),
         new Tumble(),
-        new Tumble()
+        new Tumble(),
+        new Tumble(),
+        new Coin(),
+        new Coin(),
+        new Coin(),
+        new Coin(),
+        new Coin(),
+        new Coin(),
+        new Coin(),
+        new Coin(),
+        new Coin(),
+        new Bottle(),
+        new Bottle(),
+        new Bottle(),
+        new Bottle(),
+        new Bottle(),
+        new Bottle(),
+        new Bottle(),
+        new Bottle(),
+        new Bottle(),
+        new Bottle()
     ],
     [
         new Ground('img/5_background/layers/air.png', -719),
