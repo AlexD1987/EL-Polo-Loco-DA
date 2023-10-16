@@ -1,4 +1,5 @@
 class Tumble extends MovableObject {
+    y = 355;
     width = 50;
     height = 50;
 
@@ -14,7 +15,7 @@ class Tumble extends MovableObject {
         this.loadImages(this.IMAGES_ROTATE);
         
         this.x = Math.random() * 6000;
-        this.y = this.y + 90;
+        
         this.speed = 1.4 + Math.random() * 0.5;
 
         this.animate();
