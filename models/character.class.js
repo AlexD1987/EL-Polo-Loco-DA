@@ -2,11 +2,16 @@ class Character extends MovableObject {
     y = 80;
     height = 250;
     speed = 5;
+    sleepTimer = 20;
 
-    isMoving = false; // Eine Variable, um den Bewegungszustand des Charakters zu verfolgen
+    isMoving = false;
     sleepTime = false;
     overGround = false;
     jumpingSoundPlayed = false;
+    waitTime = false;
+    startWait;
+    endWait;
+    waitingTime;
 
     IMAGES_WALKING = [
         'img/2_character_pepe/2_walk/W-21.png',
@@ -55,6 +60,22 @@ class Character extends MovableObject {
         'img/2_character_pepe/3_jump/J-39.png'
     ]
 
+    IMAGES_HURT = [
+        'img/2_character_pepe/4_hurt/H-41.png',
+        'img/2_character_pepe/4_hurt/H-42.png',
+        'img/2_character_pepe/4_hurt/H-43.png'
+    ]
+
+    IMAGES_DEAD = [
+        'img/2_character_pepe/5_dead/D-51.png',
+        'img/2_character_pepe/5_dead/D-52.png',
+        'img/2_character_pepe/5_dead/D-53.png',
+        'img/2_character_pepe/5_dead/D-54.png',
+        'img/2_character_pepe/5_dead/D-55.png',
+        'img/2_character_pepe/5_dead/D-56.png',
+        'img/2_character_pepe/5_dead/D-57.png'
+    ]
+
     world;
     walking_sound = new Audio('audio/walk.mp3');
     snoring_sound = new Audio('audio/snoring.mp3');
@@ -68,41 +89,47 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_WAITING);
         this.loadImages(this.IMAGES_SLEEPING);
         this.loadImages(this.IMAGES_JUMP);
+        this.loadImages(this.IMAGES_HURT);
+        this.loadImages(this.IMAGES_DEAD);
 
         this.animate();
         this.applyGravity();
     }
 
     animate() {
-        let sleepTimeout;
-        const resetSleepTimer = () => {
-            this.sleepTimer(sleepTimeout);
-        };
-
-        this.handleMovement(resetSleepTimer);
+        this.handleMovement();
 
         setInterval(() => {
             this.checkJumpAnimation();
+            this.checkSleepTimer();
         }, 90);
 
         setInterval(() => {
+            this.checkHurtState();
             this.checkSleepAnimation();
+            this.checkDeadState();
         }, 350);
 
-        resetSleepTimer();
+        setInterval(() => {
+            this.checkWaitAnimation();
+        }, 500);
     }
 
     checkSleepAnimation() {
-        if (!this.isMoving) {
-            if (this.sleepTime) {
-                this.playAnimation(this.IMAGES_SLEEPING);
-                this.snoring_sound.play();
-                this.jumpingSoundPlayed = false;
-            } else {
-                this.walking_sound.pause();
-                this.playAnimation(this.IMAGES_WAITING);
-                this.jumpingSoundPlayed = false;
-            }
+        if (this.waitingTime > this.sleepTimer) {
+            this.sleepTime = true;
+            this.playAnimation(this.IMAGES_SLEEPING);
+            this.snoring_sound.play();
+            this.jumpingSoundPlayed = false;
+        }
+    }
+
+    checkWaitAnimation() {
+        if (!this.isMoving && !this.sleepTime) {
+            this.walking_sound.pause();
+            this.playAnimation(this.IMAGES_WAITING);
+            this.jumpingSoundPlayed = false;
+            this.startSleepTimer();
         }
     }
 
@@ -111,29 +138,59 @@ class Character extends MovableObject {
             if (!this.jumpingSoundPlayed) {
                 this.jumping_sound.play();
                 this.jumpingSoundPlayed = true;
+                this.resetSleepTimer();
             }
-            this.sleepTime = false;
             this.walking_sound.pause();
             this.playAnimation(this.IMAGES_JUMP);
         } else if (this.isMoving) {
-            this.sleepTime = false;
             this.walking_sound.play();
             this.playAnimation(this.IMAGES_WALKING);
             this.jumpingSoundPlayed = false;
+            this.resetSleepTimer();
         }
     }
 
-    handleMovement(resetSleepTimer) {
+    checkHurtState() {
+        if (this.isHurt() && !this.isDead()) {
+            this.playAnimation(this.IMAGES_HURT);
+            this.resetSleepTimer();
+        }
+    }
+
+    checkDeadState() {
+        if (this.isDead()) {
+            this.playAnimation(this.IMAGES_DEAD);
+            this.walking_sound.pause();
+            addEventListener('keydown', (event) => {
+                if (event.keyCode == 39) {
+                    keyboard.RIGHT = false;
+                }
+                if (event.keyCode == 37) {
+                    keyboard.LEFT = false;
+                }
+                if (event.keyCode == 32) {
+                    keyboard.SPACE = false;
+                }
+            })
+            this.resetSleepTimer();
+        }
+    }
+
+    handleMovement() {
         setInterval(() => {
             if (this.world.keyboard.SPACE && !this.isOverGround()) {
                 this.jump();
+                this.resetSleepTimer();
+                this.snoring_sound.pause();
             } else {
                 if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
                     this.mainCharacterMoveRight();
-                    resetSleepTimer();
+                    this.resetSleepTimer();
+                    this.snoring_sound.pause();
                 } else if (this.world.keyboard.LEFT && this.x > 0) {
                     this.mainCharacterMoveLeft();
-                    resetSleepTimer();
+                    this.resetSleepTimer();
+                    this.snoring_sound.pause();
                 } else {
                     this.isMoving = false;
                 }
@@ -142,11 +199,25 @@ class Character extends MovableObject {
         }, 1000 / 40);
     }
 
-    sleepTimer(sleepTimeout) {
-        clearTimeout(sleepTimeout);
-        sleepTimeout = setTimeout(() => {
-            this.sleepTime = true;
-        }, 1200000);
+    startSleepTimer() {
+        if (!this.waitTime) {
+            this.waitTime = true;
+            this.startWait = Date.now();
+        }
     }
 
+    checkSleepTimer() {
+        if (this.waitTime) {
+            this.endWait = Date.now();
+            this.waitingTime = (this.endWait - this.startWait) / 1000;
+        }
+    }
+
+    resetSleepTimer() {
+        this.startWait = 0;
+        this.endWait = 0;
+        this.sleepTime = false;
+        this.waitTime = false;
+        this.waitingTime = 0;
+    }
 }
