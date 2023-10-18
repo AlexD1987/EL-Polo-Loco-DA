@@ -23,22 +23,15 @@ const level1 = new Level(
         new Endboss()
     ],
     [
+        new Cloud(),
+        new Cloud(),
+        new Cloud(),
         new Sun(),
-        new Cloud(),
-        new Cloud(),
-        new Cloud(),
         new Tumble(),
         new Tumble(),
-        new Tumble(),
-        new Coin(),
-        new Coin(),
-        new Coin(),
-        new Coin(),
-        new Coin(),
-        new Coin(),
-        new Coin(),
-        new Coin(),
-        new Coin(),
+        new Tumble()
+    ],
+    [
         new Bottle(),
         new Bottle(),
         new Bottle(),
@@ -49,6 +42,18 @@ const level1 = new Level(
         new Bottle(),
         new Bottle(),
         new Bottle()
+    ],
+    [
+        new Coin(),
+        new Coin(),
+        new Coin(),
+        new Coin(),
+        new Coin(),
+        new Coin(),
+        new Coin(),
+        new Coin(),
+        new Coin(),
+        
     ],
     [
         new Ground('img/5_background/layers/air.png', -719),

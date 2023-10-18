@@ -1,5 +1,6 @@
 class World {
     character = new Character();
+    statusBar = new StatusBar();
     level = level1;
 
     canvas;
@@ -14,6 +15,7 @@ class World {
         this.draw();
         this.setWorld();
         this.checkCollision();
+        this.checkCollection();
     }
 
     checkCollision() {
@@ -22,10 +24,25 @@ class World {
                 if ( this.character.isColliding(enemy) ) {
                     this.character.hit();
                     console.log('lost energy', this.character.energy);
+                    this.statusBar.setPercentage(this.character.energy);
                 }
             });
         }, 500);
     }
+
+
+    checkCollection() {
+        setInterval(() => {
+            this.level.bottles.forEach( (bottle) => {
+                if ( this.character.isColliding(bottle) ) {
+                    this.character.collect();
+                    console.log('collect bottle', this.character.ammonition);
+                }
+            });
+        }, 500);
+    }
+    
+    
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -33,8 +50,15 @@ class World {
 
         this.addObjectsToMap(this.level.backgroundObjects);
         this.addObjectsToMap(this.level.clouds);
+        
+        this.ctx.translate(-this.camera_x, 0);
+        this.addToMap(this.statusBar);
+        this.ctx.translate(this.camera_x, 0);
+
         this.addToMap(this.character);
         this.addObjectsToMap(this.level.enemies);
+        this.addObjectsToMap(this.level.bottles);
+        this.addObjectsToMap(this.level.coins);
 
         this.ctx.translate(-this.camera_x, 0);
 

@@ -2,6 +2,9 @@ class Character extends MovableObject {
     y = 80;
     height = 250;
     speed = 5;
+    energy = 100;
+    ammonition = 0;
+    
     sleepTimer = 20;
 
     isMoving = false;
@@ -9,6 +12,7 @@ class Character extends MovableObject {
     overGround = false;
     jumpingSoundPlayed = false;
     waitTime = false;
+
     startWait;
     endWait;
     waitingTime;

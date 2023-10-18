@@ -1,4 +1,4 @@
-class Bottle extends MovableObject {
+class Bottle extends DrawableObject {
     width = 80
     height = 60;
     y = 360;
