@@ -15,7 +15,8 @@ class World {
         this.draw();
         this.setWorld();
         this.checkCollision();
-        this.checkCollection();
+        this.collectAmmonition();
+        this.collectCoins();
     }
 
     checkCollision() {
@@ -31,12 +32,23 @@ class World {
     }
 
 
-    checkCollection() {
+    collectAmmonition() {
         setInterval(() => {
             this.level.bottles.forEach( (bottle) => {
                 if ( this.character.isColliding(bottle) ) {
-                    this.character.collect();
+                    this.character.collect(1);
                     console.log('collect bottle', this.character.ammonition);
+                }
+            });
+        }, 500);
+    }
+
+    collectCoins() {
+        setInterval(() => {
+            this.level.coins.forEach( (coin) => {
+                if ( this.character.isColliding(coin) ) {
+                    this.character.collect(2);
+                    console.log('collect coin', this.character.coins);
                 }
             });
         }, 500);

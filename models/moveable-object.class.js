@@ -4,8 +4,7 @@ class MovableObject extends DrawableObject {
     speedY = 0;
     acceleration = 2;
     lastHit = 0;
-    coins = 0;
-
+    
 
     applyGravity() {
         setInterval(() => {
@@ -86,8 +85,12 @@ class MovableObject extends DrawableObject {
     }
 
 
-    collect() {
-        this.ammonition += 1;
+    collect(item) {
+        if (item == 1) {
+            this.ammonition += 1;
+        } else {
+            this.coins += 1;
+        }
     }
 
 
