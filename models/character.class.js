@@ -189,7 +189,8 @@ class Character extends MovableObject {
         this.dead_sound.play();
         setTimeout(() => {
             this.dead_sound.pause();
-        },3000);
+            this.dead_sound.currentTime = 0;
+        }, 2500);
         setInterval(() => {
             this.y += 2;
         }, 1000 / 30);;
