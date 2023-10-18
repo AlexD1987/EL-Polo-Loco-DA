@@ -1,10 +1,11 @@
-class MovableObject extends DrawableObject {    
+class MovableObject extends DrawableObject {
     speed = 0.15;
     otherDirection = false;
     speedY = 0;
     acceleration = 2;
     lastHit = 0;
-    
+    ammonition = 0;
+
 
     applyGravity() {
         setInterval(() => {
@@ -15,9 +16,13 @@ class MovableObject extends DrawableObject {
         }, 1000 / 25);
     }
 
-    
+
     isOverGround() {
-        return this.y < 170;
+        if (this instanceof ThrowableObject) {
+            return true;
+        } else {
+            return this.y < 170;
+        }
     }
 
 
@@ -53,7 +58,7 @@ class MovableObject extends DrawableObject {
 
 
     jump() {
-        this.speedY = 23 ;
+        this.speedY = 23;
         this.sleepTime = false;
         this.snoring_sound.pause();
     }
@@ -102,6 +107,6 @@ class MovableObject extends DrawableObject {
 
 
     isDead() {
-        return this.energy == 0;    
+        return this.energy == 0;
     }
 }

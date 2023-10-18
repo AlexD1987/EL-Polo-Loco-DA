@@ -1,7 +1,7 @@
 class World {
     character = new Character();
     statusBar = new StatusBar();
-    throwableObject = [new ThrowableObject()];
+    throwableObject = [];
     level = level1;
 
     canvas;
@@ -15,49 +15,70 @@ class World {
         this.keyboard = keyboard;
         this.draw();
         this.setWorld();
-        this.checkCollision();
+        this.checkStatus();
+        this.checkThrowBottle();
         this.collectAmmonition();
         this.collectCoins();
     }
 
-    checkCollision() {
+    checkStatus() {
         setInterval(() => {
-            this.level.enemies.forEach( (enemy) => {
-                if ( this.character.isColliding(enemy) ) {
-                    this.character.hit();
-                    console.log('lost energy', this.character.energy);
-                    this.statusBar.setPercentage(this.character.energy);
-                }
-            });
-        }, 500);
+            this.checkCollision();
+            this.collectAmmonition();
+            this.collectCoins();
+        }, 400);
+    }
+
+    checkThrowBottle () {
+        setInterval(() => {
+            this.checkThrowObject();
+        }, 300);
+    }
+
+
+    checkCollision() {
+        this.level.enemies.forEach((enemy) => {
+            if (this.character.isColliding(enemy)) {
+                this.character.hit();
+                console.log('lost energy', this.character.energy);
+                this.statusBar.setPercentage(this.character.energy);
+            }
+        });
+    }
+
+    checkThrowObject() {
+        if (this.keyboard.D  && this.character.ammonition > 0) {
+            let bottle = new ThrowableObject(this.character.x + 60, this.character.y + 100);
+            this.throwableObject.push(bottle);
+            this.character.ammonition -= 1;
+            console.log('ammo', this.character.ammonition);
+        }
     }
 
 
     collectAmmonition() {
-        setInterval(() => {
-            this.level.bottles.forEach( (bottle, index) => {
-                if ( this.character.isColliding(bottle) ) {
-                    this.character.collect('bottle');
-                    console.log('collect bottle', this.character.ammonition);
-                    this.level.bottles.splice(index, 1);
-                }
-            });
-        }, 500);
+        this.level.bottles.forEach((bottle, index) => {
+            if (this.character.isColliding(bottle)) {
+                this.character.collect('bottle');
+                console.log('collect bottle', this.character.ammonition);
+                this.level.bottles.splice(index, 1);
+            }
+        });
     }
 
+
     collectCoins() {
-        setInterval(() => {
-            this.level.coins.forEach( (coin, index) => {
-                if ( this.character.isColliding(coin) ) {
-                    this.character.collect('coin');
-                    console.log('collect coin', this.character.coins);
-                    this.level.coins.splice(index, 1)
-                }
-            });
-        }, 500);
+        this.level.coins.forEach((coin, index) => {
+            if (this.character.isColliding(coin)) {
+                this.character.collect('coin');
+                console.log('collect coin', this.character.coins);
+                this.level.coins.splice(index, 1)
+            }
+        });
     }
-    
-    
+
+
+
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -65,7 +86,7 @@ class World {
 
         this.addObjectsToMap(this.level.backgroundObjects);
         this.addObjectsToMap(this.level.clouds);
-        
+
         this.ctx.translate(-this.camera_x, 0);
         this.addToMap(this.statusBar);
         this.ctx.translate(this.camera_x, 0);
@@ -121,7 +142,7 @@ class World {
     }
 
     isColliding(obj) {
-       return this.x + this.width > obj.x &&
+        return this.x + this.width > obj.x &&
             this.y + this.height > obj.y &&
             this.x < obj.x &&
             this.y < obj.y + obj.height

@@ -3,7 +3,6 @@ class Character extends MovableObject {
     height = 250;
     speed = 5;
     energy = 100;
-    ammonition = 0;
     coins = 0;
 
     sleepTimer = 20;
@@ -13,6 +12,7 @@ class Character extends MovableObject {
     overGround = false;
     jumpingSoundPlayed = false;
     waitTime = false;
+    gameOver = false;
 
     startWait;
     endWait;
@@ -118,7 +118,7 @@ class Character extends MovableObject {
         setInterval(() => {
             this.checkWaitAnimation();
             this.checkDeadState();
-        }, 500);
+        }, 400);
     }
 
     checkSleepAnimation() {
@@ -193,7 +193,7 @@ class Character extends MovableObject {
         }, 2500);
         setInterval(() => {
             this.y += 2;
-        }, 1000 / 30);;
+        }, 1000 / 40);;
     }
 
     handleMovement() {
