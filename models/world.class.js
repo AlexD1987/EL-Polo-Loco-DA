@@ -34,10 +34,11 @@ class World {
 
     collectAmmonition() {
         setInterval(() => {
-            this.level.bottles.forEach( (bottle) => {
+            this.level.bottles.forEach( (bottle, index) => {
                 if ( this.character.isColliding(bottle) ) {
-                    this.character.collect(1);
+                    this.character.collect('bottle');
                     console.log('collect bottle', this.character.ammonition);
+                    this.level.bottles.splice(index, 1);
                 }
             });
         }, 500);
@@ -45,10 +46,11 @@ class World {
 
     collectCoins() {
         setInterval(() => {
-            this.level.coins.forEach( (coin) => {
+            this.level.coins.forEach( (coin, index) => {
                 if ( this.character.isColliding(coin) ) {
-                    this.character.collect(2);
+                    this.character.collect('coin');
                     console.log('collect coin', this.character.coins);
+                    this.level.coins.splice(index, 1)
                 }
             });
         }, 500);

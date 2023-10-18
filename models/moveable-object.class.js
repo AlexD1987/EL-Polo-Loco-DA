@@ -86,7 +86,7 @@ class MovableObject extends DrawableObject {
 
 
     collect(item) {
-        if (item == 1) {
+        if (item == 'bottle') {
             this.ammonition += 1;
         } else {
             this.coins += 1;
