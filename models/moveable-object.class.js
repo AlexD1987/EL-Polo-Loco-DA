@@ -15,7 +15,7 @@ class MovableObject extends DrawableObject {
         }, 1000 / 25);
     }
 
-
+    
     isOverGround() {
         return this.y < 170;
     }
@@ -102,6 +102,6 @@ class MovableObject extends DrawableObject {
 
 
     isDead() {
-        return this.energy == 0;
+        return this.energy == 0;    
     }
 }

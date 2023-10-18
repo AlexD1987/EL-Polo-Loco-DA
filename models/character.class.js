@@ -5,7 +5,7 @@ class Character extends MovableObject {
     energy = 100;
     ammonition = 0;
     coins = 0;
-    
+
     sleepTimer = 20;
 
     isMoving = false;
@@ -85,6 +85,8 @@ class Character extends MovableObject {
     walking_sound = new Audio('audio/walk.mp3');
     snoring_sound = new Audio('audio/snoring.mp3');
     jumping_sound = new Audio('audio/jump.mp3');
+    dead_sound = new Audio('audio/dead.mp3');
+
 
 
     constructor() {
@@ -111,11 +113,11 @@ class Character extends MovableObject {
         setInterval(() => {
             this.checkHurtState();
             this.checkSleepAnimation();
-            this.checkDeadState();
         }, 350);
 
         setInterval(() => {
             this.checkWaitAnimation();
+            this.checkDeadState();
         }, 500);
     }
 
@@ -165,6 +167,8 @@ class Character extends MovableObject {
     checkDeadState() {
         if (this.isDead()) {
             this.playAnimation(this.IMAGES_DEAD);
+            this.startDeadAnimation();
+
             this.walking_sound.pause();
             addEventListener('keydown', (event) => {
                 if (event.keyCode == 39) {
@@ -179,6 +183,16 @@ class Character extends MovableObject {
             })
             this.resetSleepTimer();
         }
+    }
+
+    startDeadAnimation() {
+        this.dead_sound.play();
+        setTimeout(() => {
+            this.dead_sound.pause();
+        },3000);
+        setInterval(() => {
+            this.y += 2;
+        }, 1000 / 30);;
     }
 
     handleMovement() {

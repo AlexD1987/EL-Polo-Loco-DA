@@ -1,6 +1,7 @@
 class World {
     character = new Character();
     statusBar = new StatusBar();
+    throwableObject = [new ThrowableObject()];
     level = level1;
 
     canvas;
@@ -73,6 +74,7 @@ class World {
         this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.level.bottles);
         this.addObjectsToMap(this.level.coins);
+        this.addObjectsToMap(this.throwableObject);
 
         this.ctx.translate(-this.camera_x, 0);
 
