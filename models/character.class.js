@@ -4,8 +4,7 @@ class Character extends MovableObject {
     speed = 5;
     energy = 100;
     coins = 0;
-
-    sleepTimer = 20;
+    sleepTimer = 30;
 
     isMoving = false;
     sleepTime = false;
@@ -17,6 +16,7 @@ class Character extends MovableObject {
     startWait;
     endWait;
     waitingTime;
+    position;
 
     IMAGES_WALKING = [
         'img/2_character_pepe/2_walk/W-21.png',
@@ -86,6 +86,7 @@ class Character extends MovableObject {
     snoring_sound = new Audio('audio/snoring.mp3');
     jumping_sound = new Audio('audio/jump.mp3');
     dead_sound = new Audio('audio/dead.mp3');
+    collect_sound = new Audio('audio/coins.mp3');
 
 
 
@@ -99,6 +100,7 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_DEAD);
 
         this.animate();
+        this.setCharacterPosition();
         this.applyGravity();
     }
 
@@ -119,6 +121,12 @@ class Character extends MovableObject {
             this.checkWaitAnimation();
             this.checkDeadState();
         }, 400);
+    }
+
+    setCharacterPosition() {
+        setInterval(() => {
+            this.position = this.x;
+        }, 500);   
     }
 
     checkSleepAnimation() {

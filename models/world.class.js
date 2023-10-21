@@ -8,6 +8,10 @@ class World {
     keyboard;
     ctx;
     camera_x = 0;
+    characterPosition;
+
+    collect_sound = new Audio('audio/collect.mp3');
+
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -19,15 +23,18 @@ class World {
         this.checkThrowBottle();
         this.collectAmmonition();
         this.collectCoins();
+        this.checkCharacterPosition();
     }
+
 
     checkStatus() {
         setInterval(() => {
             this.checkCollision();
             this.collectAmmonition();
             this.collectCoins();
-        }, 400);
+        }, 200);
     }
+
 
     checkThrowBottle () {
         setInterval(() => {
@@ -46,6 +53,7 @@ class World {
         });
     }
 
+
     checkThrowObject() {
         if (this.keyboard.D  && this.character.ammonition > 0) {
             let bottle = new ThrowableObject(this.character.x + 60, this.character.y + 100);
@@ -62,6 +70,7 @@ class World {
                 this.character.collect('bottle');
                 console.log('collect bottle', this.character.ammonition);
                 this.level.bottles.splice(index, 1);
+                this.collect_sound.play();
             }
         });
     }
@@ -71,13 +80,17 @@ class World {
         this.level.coins.forEach((coin, index) => {
             if (this.character.isColliding(coin)) {
                 this.character.collect('coin');
-                console.log('collect coin', this.character.coins);
                 this.level.coins.splice(index, 1)
+                this.playCollectAudio();
+                this.collect_sound.play();
             }
         });
     }
 
 
+    playCollectAudio() {
+        this.collect_sound.play();
+    }
 
 
     draw() {
@@ -111,11 +124,13 @@ class World {
         this.character.world = this;
     }
 
+    
     addObjectsToMap(object) {
         object.forEach(o => {
             this.addToMap(o);
         });
     }
+
 
     addToMap(mo) {
         if (mo.otherDirection) {
@@ -129,6 +144,7 @@ class World {
         }
     }
 
+
     flipImage(mo) {
         this.ctx.save();
         this.ctx.translate(mo.width, 0);
@@ -136,15 +152,24 @@ class World {
         mo.x = mo.x * -1;
     }
 
+
     flipBack(mo) {
         mo.x = mo.x * -1;
         this.ctx.restore();
     }
+
 
     isColliding(obj) {
         return this.x + this.width > obj.x &&
             this.y + this.height > obj.y &&
             this.x < obj.x &&
             this.y < obj.y + obj.height
+    }
+
+
+    checkCharacterPosition() {
+        setInterval(() => {
+            this.characterPosition = this.character.position;
+        }, 100);
     }
 }
