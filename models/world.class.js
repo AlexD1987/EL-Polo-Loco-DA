@@ -9,6 +9,9 @@ class World {
     ctx;
     camera_x = 0;
     characterPosition;
+    isBottleThrowing = false;
+    characterFlipped = false;
+
 
     collect_sound = new Audio('audio/collect.mp3');
 
@@ -38,8 +41,10 @@ class World {
 
     checkThrowBottle () {
         setInterval(() => {
-            this.checkThrowObject();
-        }, 300);
+            if (!this.isBottleThrowing) {
+                this.checkThrowObject();
+            }
+        }, 100);
     }
 
 
@@ -56,10 +61,24 @@ class World {
 
     checkThrowObject() {
         if (this.keyboard.D  && this.character.ammonition > 0) {
-            let bottle = new ThrowableObject(this.character.x + 60, this.character.y + 100);
-            this.throwableObject.push(bottle);
+            this.checkThrowDirection();
             this.character.ammonition -= 1;
             console.log('ammo', this.character.ammonition);
+            this.isBottleThrowing = true; 
+            setTimeout(() => {
+                this.isBottleThrowing = false;
+            }, 1100);
+        }
+    }
+
+
+    checkThrowDirection() {
+        if (!this.characterFlipped) {
+            let bottle = new ThrowableObject(this.character.x + 60, this.character.y + 100);
+            this.throwableObject.push(bottle);
+        } else {
+            let bottle = new ThrowableObject(this.character.x, this.character.y + 100);
+            this.throwableObject.push(bottle);
         }
     }
 
@@ -81,15 +100,9 @@ class World {
             if (this.character.isColliding(coin)) {
                 this.character.collect('coin');
                 this.level.coins.splice(index, 1)
-                this.playCollectAudio();
                 this.collect_sound.play();
             }
         });
-    }
-
-
-    playCollectAudio() {
-        this.collect_sound.play();
     }
 
 

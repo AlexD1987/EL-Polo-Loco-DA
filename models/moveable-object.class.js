@@ -46,6 +46,8 @@ class MovableObject extends DrawableObject {
         this.otherDirection = false;
         this.isMoving = true;
         this.snoring_sound.pause();
+        world.characterFlipped = false;
+        
     }
 
 
@@ -54,6 +56,20 @@ class MovableObject extends DrawableObject {
         this.otherDirection = true;
         this.isMoving = true;
         this.snoring_sound.pause();
+        world.characterFlipped = true;
+    }
+
+
+    flipThrowDirection() {
+        if (!world.characterFlipped) {
+            setTimeout(() => {
+                world.throwDirection = false;
+            }, 500);
+        } else {
+            setTimeout(() => {
+                world.throwDirection = true;
+            }, 500);
+        }
     }
 
 

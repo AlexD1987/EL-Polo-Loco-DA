@@ -58,11 +58,8 @@ class Endboss extends MovableObject {
 
         this.x = 719 * 8;
 
-        
         this.animate();
         this.getFightPosition();
-    
-        
     }
 
 
@@ -88,8 +85,10 @@ class Endboss extends MovableObject {
     }
 
     getFightPosition() {
-        setInterval(() => {
-            this.startFight = world.characterPosition;
-        }, 100);
+        setTimeout(() => {
+            setInterval(() => {
+                this.startFight = world.characterPosition;
+            }, 100);
+        }, 1000);
     }
 }

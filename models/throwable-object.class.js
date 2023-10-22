@@ -1,6 +1,5 @@
 class ThrowableObject extends MovableObject {
 
-
     IMAGES_THROWING = [
         'img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png',
         'img/6_salsa_bottle/bottle_rotation/2_bottle_rotation.png',
@@ -23,7 +22,7 @@ class ThrowableObject extends MovableObject {
         this.y = y;
         this.height = 80;
         this.width = 60;
-        
+
         this.loadImages(this.IMAGES_THROWING);
         this.loadImages(this.IMAGES_SPLASH);
         this.throw();
@@ -32,9 +31,15 @@ class ThrowableObject extends MovableObject {
     throw() {
         this.speedY = 17;
         this.applyGravity();
-        setInterval(() => {
-            this.x += 10;
-        }, 25);
+        
+        if (!world.characterFlipped) {
+            setInterval(() => {
+                this.x += 10;
+            }, 25);
+        } else {
+            setInterval(() => {
+                this.x -= 10;
+            }, 25);
         }
-
+    }
 }
