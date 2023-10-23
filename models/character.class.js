@@ -4,7 +4,7 @@ class Character extends MovableObject {
     speed = 5;
     energy = 100;
     coins = 0;
-    sleepTimer = 30;
+    sleepTimer = 5000;
 
     isMoving = false;
     sleepTime = false;

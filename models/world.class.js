@@ -13,7 +13,6 @@ class World {
     characterFlipped = false;
     hitEnemy = false;
 
-
     collect_sound = new Audio('audio/collect.mp3');
 
 
@@ -84,21 +83,12 @@ class World {
                     this.throwableObject.splice(bottle);
                 }
             }, 1800);
-            
-            
         } else {
             let bottle = new ThrowableObject(this.character.x, this.character.y + 100);
             this.throwableObject.push(bottle);
             this.checkEnemyHit();
-           
         }
     }
-
-
-    checkBottleSplash() {
-        
-    }
-
 
 
     checkEnemyHit() {
@@ -114,12 +104,9 @@ class World {
                     }
                 });
             });
-        }, 25);
+        }, 700);
     }
     
-
-    
-
 
     collectAmmonition() {
         this.level.bottles.forEach((bottle, index) => {

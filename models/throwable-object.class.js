@@ -16,6 +16,10 @@ class ThrowableObject extends MovableObject {
         'img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png',
     ]
 
+    hit_sound = new Audio('audio/break.mp3')
+    whip_sound = new Audio('audio/whip.mp3')
+
+
     constructor(x, y) {
         super().loadImage(this.IMAGES_THROWING[0]);
         this.loadImages(this.IMAGES_THROWING);
@@ -39,11 +43,15 @@ class ThrowableObject extends MovableObject {
     setThrowDirection() {
         if (!world.characterFlipped) {
             setInterval(() => {
-                this.x += 10;
+                if (!world.hitEnemy) {
+                    this.x += 10;
+                }
             }, 25);
         } else {
             setInterval(() => {
-                this.x -= 10;
+                if (!world.hitEnemy) {
+                    this.x -= 10;
+                }
             }, 25);
         }
     }
@@ -53,9 +61,29 @@ class ThrowableObject extends MovableObject {
         setInterval(() => {
             if (!world.hitEnemy) {
                 this.playAnimation(this.IMAGES_THROWING);
-        } else {
+            } else {
                 this.playAnimation(this.IMAGES_SPLASH);
-        }
+                this.hit_sound.play();
+            }
         }, 50);
+
+        this.throwingBottle();
+    }
+
+
+    throwingBottle() {
+        let soundPlayed = false;
+
+        setInterval(() => {
+            if (!soundPlayed) {
+                this.whip_sound.play();
+                soundPlayed = true;
+                setTimeout(() => {
+                    this.whip_sound.pause();
+                }, 1000);
+            }
+        }, 500);
     }
 }
+
+
