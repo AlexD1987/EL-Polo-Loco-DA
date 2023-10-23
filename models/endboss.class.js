@@ -71,7 +71,11 @@ class Endboss extends MovableObject {
         setInterval(() => {
             if (i < 7) {
                 this.playAnimation(this.IMAGES_ALERT)
-                this.chickenAlarm();
+                setTimeout(() => {
+                    if (world.characterPosition >= 5100) {
+                        this.chickenAlarm();
+                    }
+                }, 100);
             } else {
                 this.playAnimation(this.IMAGES_WALKING);
             }
@@ -84,10 +88,7 @@ class Endboss extends MovableObject {
                     this.initEndboss = true;
                 }, 1700);
             }
-
         }, 200);
-
-        
     }
 
     
@@ -109,7 +110,7 @@ class Endboss extends MovableObject {
                     soundPlayed = true;
                     setTimeout(() => {
                         this.alarm_sound.pause();
-                    }, 1000);
+                    }, 800);
                 }
             }, 500);
     }

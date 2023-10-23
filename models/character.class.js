@@ -85,10 +85,9 @@ class Character extends MovableObject {
     walking_sound = new Audio('audio/walk.mp3');
     snoring_sound = new Audio('audio/snoring.mp3');
     jumping_sound = new Audio('audio/jump.mp3');
+    hurt_sound = new Audio('audio/hurt.mp3');
     dead_sound = new Audio('audio/dead.mp3');
     
-
-
 
     constructor() {
         super().loadImage('img/2_character_pepe/1_idle/idle/I-1.png');
@@ -167,6 +166,7 @@ class Character extends MovableObject {
     checkHurtState() {
         if (this.isHurt() && !this.isDead()) {
             this.playAnimation(this.IMAGES_HURT);
+            this.hurt_sound.play();
             this.snoring_sound.pause();
             this.resetSleepTimer();
         }
