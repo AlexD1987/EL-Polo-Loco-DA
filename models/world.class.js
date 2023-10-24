@@ -44,7 +44,7 @@ class World {
             if (!this.isBottleThrowing) {
                 this.checkThrowObject();
             }
-        }, 100);
+        }, 200);
     }
 
 
@@ -67,7 +67,7 @@ class World {
             this.isBottleThrowing = true; 
             setTimeout(() => {
                 this.isBottleThrowing = false;
-            }, 1000);
+            }, 1200);
             setTimeout
         }
     }

@@ -10,11 +10,11 @@ class Tumble extends MovableObject {
         'img/5_background/layers/tumble4.png'
     ]
 
-    constructor() {
+    constructor(x) {
         super().loadImage('img/5_background/layers/tumble1.png');
         this.loadImages(this.IMAGES_ROTATE);
         
-        this.x = Math.random() * 6000;
+        this.x = x;
         
         this.speed = 1.4 + Math.random() * 0.5;
 
