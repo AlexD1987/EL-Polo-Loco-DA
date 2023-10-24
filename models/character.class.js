@@ -13,6 +13,7 @@ class Character extends MovableObject {
     waitTime = false;
     gameOver = false;
 
+    world;
     startWait;
     endWait;
     waitingTime;
@@ -81,7 +82,6 @@ class Character extends MovableObject {
         'img/2_character_pepe/5_dead/D-57.png'
     ]
 
-    world;
     walking_sound = new Audio('audio/walk.mp3');
     snoring_sound = new Audio('audio/snoring.mp3');
     jumping_sound = new Audio('audio/jump.mp3');
@@ -98,10 +98,19 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_DEAD);
 
+        this.initLevel();
         this.animate();
         this.setCharacterPosition();
         this.applyGravity();
     }
+
+
+    initLevel() {
+        setTimeout(() => {
+            this.startLevel = true;
+        }, 1500);
+    }
+
 
     animate() {
         this.handleMovement();
@@ -147,7 +156,7 @@ class Character extends MovableObject {
     }
 
     checkJumpAnimation() {
-        if (this.isOverGround()) {
+        if (this.isOverGround() && this.startLevel) {
             if (!this.jumpingSoundPlayed) {
                 this.jumping_sound.play();
                 this.jumpingSoundPlayed = true;

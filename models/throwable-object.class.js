@@ -58,22 +58,25 @@ class ThrowableObject extends MovableObject {
 
 
     bottleAnimation() {
+        let soundPlayed = false;
+
         setInterval(() => {
             if (!world.hitEnemy) {
                 this.playAnimation(this.IMAGES_THROWING);
             } else {
                 this.playAnimation(this.IMAGES_SPLASH);
-                this.hit_sound.play();
+                if (!soundPlayed) {
+                    this.hit_sound.play();
+                    soundPlayed = true;
+                }
             }
         }, 50);
 
-        this.throwingBottle();
+        this.throwingBottle(soundPlayed);
     }
 
 
-    throwingBottle() {
-        let soundPlayed = false;
-
+    throwingBottle(soundPlayed) {
         setInterval(() => {
             if (!soundPlayed) {
                 this.whip_sound.play();

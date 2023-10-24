@@ -61,8 +61,15 @@ class Endboss extends MovableObject {
 
         this.x = 719 * 8;
 
-        this.animate();
-        this.getFightPosition();
+        this.initAnimation();
+    }
+
+
+    initAnimation() {
+        setTimeout(() => {
+            this.animate();
+            this.getFightPosition();
+        }, 1500);
     }
 
 
@@ -91,7 +98,7 @@ class Endboss extends MovableObject {
         }, 200);
     }
 
-    
+
     getFightPosition() {
         setTimeout(() => {
             setInterval(() => {
@@ -102,16 +109,16 @@ class Endboss extends MovableObject {
 
 
     chickenAlarm() {
-            let soundPlayed = false;
-    
-            setInterval(() => {
-                if (!soundPlayed) {
-                    this.alarm_sound.play();
-                    soundPlayed = true;
-                    setTimeout(() => {
-                        this.alarm_sound.pause();
-                    }, 800);
-                }
-            }, 500);
+        let soundPlayed = false;
+
+        setInterval(() => {
+            if (!soundPlayed) {
+                this.alarm_sound.play();
+                soundPlayed = true;
+                setTimeout(() => {
+                    this.alarm_sound.pause();
+                }, 800);
+            }
+        }, 500);
     }
 }
