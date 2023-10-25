@@ -9,22 +9,19 @@ class StatusBar extends DrawableObject {
         'img/7_statusbars/1_statusbar/2_statusbar_health/green/100.png'
     ]
 
-    IMAGES_COINS = [
-        'img/7_statusbars/1_statusbar/1_statusbar_coin/orange/0.png',
-        'img/7_statusbars/1_statusbar/1_statusbar_coin/orange/20.png',
-        'img/7_statusbars/1_statusbar/1_statusbar_coin/orange/40.png',
-        'img/7_statusbars/1_statusbar/1_statusbar_coin/orange/60.png',
-        'img/7_statusbars/1_statusbar/1_statusbar_coin/orange/80.png',
-        'img/7_statusbars/1_statusbar/1_statusbar_coin/orange/100.png'
+    IMAGES_COLLECTEBLES = [
+        'img/7_statusbars/3_icons/icon_salsa_bottle.png',
+        'img/7_statusbars/3_icons/icon_coin.png'
     ]
 
+    
     percentage = 100;
 
 
     constructor() {
         super();
         this.loadImages(this.IMAGES_HEALTH);
-        this.loadImages(this.IMAGES_COINS);
+        this.loadImages(this.IMAGES_COLLECTEBLES);
         this.x = 20;
         this.y = 0;
         this.width = 200;

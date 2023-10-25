@@ -42,6 +42,15 @@ class Endboss extends MovableObject {
         'img/4_enemie_boss_chicken/3_attack/G20.png'
     ]
 
+    IMAGES_LIFEBAR = [
+        'img/4_enemie_boss_chicken/_lifebar/eb_0.png',
+        'img/4_enemie_boss_chicken/_lifebar/eb_20.png',
+        'img/4_enemie_boss_chicken/_lifebar/eb_40.png',
+        'img/4_enemie_boss_chicken/_lifebar/eb_60.png',
+        'img/4_enemie_boss_chicken/_lifebar/eb_80.png',
+        'img/4_enemie_boss_chicken/_lifebar/eb_100.png'
+    ]
+
     IMAGES_DEAD = [
         'img/4_enemie_boss_chicken/5_dead/G24.png',
         'img/4_enemie_boss_chicken/5_dead/G25.png',
@@ -57,6 +66,7 @@ class Endboss extends MovableObject {
         this.loadImages(this.IMAGES_ALERT);
         this.loadImages(this.IMAGES_ATTACK);
         this.loadImages(this.IMAGES_HURT);
+        this.loadImages(this.IMAGES_LIFEBAR);
         this.loadImages(this.IMAGES_DEAD);
 
         this.x = 719 * 8;

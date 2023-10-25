@@ -1,6 +1,6 @@
 class World {
     character = new Character();
-    statusBar = new StatusBar();
+    statusBar = [new StatusBar()]
     throwableObject = [];
     level = level1;
 
