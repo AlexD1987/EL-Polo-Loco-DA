@@ -18,15 +18,28 @@ class StatusBar extends DrawableObject {
     percentage = 100;
 
 
-    constructor() {
+    constructor(type, x, y, width, height) {
         super();
         this.loadImages(this.IMAGES_HEALTH);
         this.loadImages(this.IMAGES_COLLECTEBLES);
-        this.x = 20;
-        this.y = 0;
-        this.width = 200;
-        this.height = 50;
-        this.setPercentage(100);
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.setStatusBar(type);
+    }
+
+
+    setStatusBar(type) {
+        if (type == 'ammo') {
+            let path = this.IMAGES_COLLECTEBLES[0];
+            this.img = this.imageChache[path];
+        } else if (type == 'coin') {
+            let path = this.IMAGES_COLLECTEBLES[1];
+            this.img = this.imageChache[path];
+        } else {
+            this.setPercentage(100);
+        }
     }
 
 

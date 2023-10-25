@@ -1,6 +1,8 @@
 class World {
     character = new Character();
-    statusBar = [new StatusBar()]
+    statusBar = new StatusBar('health', 20, 0, 200, 50);
+    ammoBar = new StatusBar('ammo', 5, 50, 70, 60);
+    coinBar = new StatusBar('coin', 95, 50, 60, 60);
     throwableObject = [];
     level = level1;
 
@@ -140,6 +142,8 @@ class World {
 
         this.ctx.translate(-this.camera_x, 0);
         this.addToMap(this.statusBar);
+        this.addToMap(this.ammoBar);
+        this.addToMap(this.coinBar);
         this.ctx.translate(this.camera_x, 0);
 
         this.addToMap(this.character);
