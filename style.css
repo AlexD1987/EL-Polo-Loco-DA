@@ -1,7 +1,16 @@
+/* smokum-regular - latin */
+@font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Smokum';
+    font-style: normal;
+    font-weight: 400;
+    src: url('/font/smokum-v28-latin-regular.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+  }
+
 body {
     display: flex;
     flex-direction: column;
-    
+    font-family: 'Smokum';
     align-items: center;
     background-image: url('img/5_background/start_screen.png');
 }
@@ -9,6 +18,17 @@ body {
 canvas {
     background-color: black;
     border: 2px solid black;
+    position: relative;
+}
+
+.counter {
+    font-size: 24px;
+    position: absolute;
+    margin-top: -450px;
+    display: flex;
+    width: 110px;
+    justify-content: space-between;
+    padding-left: 64px;
 }
 
 #startScreen {
@@ -25,10 +45,8 @@ canvas {
     canvas {
         height: 100vh;
     }
-    
+
     .title {
         display: none;
     }
 }
- 
-
