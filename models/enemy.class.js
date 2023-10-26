@@ -9,9 +9,11 @@ class Enemy extends MovableObject {
         'img/3_enemies_chicken/chicken_normal/1_walk/3_w.png'
     ];
 
-    constructor() {
-        super().loadImage('img/3_enemies_chicken/chicken_normal/1_walk/1_w.png')
+    constructor(world) {
+        super().loadImage('img/3_enemies_chicken/chicken_normal/2_dead/dead.png')
         this.loadImages(this.IMAGES_WALKING);
+
+        this.world = world;
 
         this.x = 1000 + Math.random() * 719 * 7;
        

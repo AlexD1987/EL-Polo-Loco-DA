@@ -14,6 +14,7 @@ class World {
     isBottleThrowing = false;
     characterFlipped = false;
     hitEnemy = false;
+    bottleHitEnemy = false;
 
     collect_sound = new Audio('audio/collect.mp3');
 
@@ -83,7 +84,10 @@ class World {
             this.checkEnemyHit();
             setInterval(() => {
                 if (this.hitEnemy) {
-                    this.throwableObject.splice(bottle);
+                    setTimeout(() => {
+                        this.throwableObject.splice(bottle);
+                    }, 200);
+                    
                 }
             }, 1800);
         } else {
@@ -96,9 +100,10 @@ class World {
 
     checkEnemyHit() {
         setInterval(() => {
-            world.level.enemies.forEach((enemy) => {
+            world.level.enemies.forEach((enemy, index) => {
                 this.throwableObject.forEach((bottle) => {
                     if (bottle.isColliding(enemy)) {
+                        this.checkEnemyType(enemy, index);
                         this.hitEnemy = true;
                         console.log('hit');
                         setTimeout(() => {
@@ -107,7 +112,18 @@ class World {
                     }
                 });
             });
-        }, 700);
+        }, 200);
+    }
+
+
+    checkEnemyType(enemy, index) {
+        if (enemy instanceof Enemy) {
+            this.bottleHitEnemy = true;
+            setTimeout(() => {
+                world.level.enemies.splice(index, 1);
+                this.bottleHitEnemy = false;
+            }, 1000);
+        }
     }
     
 
