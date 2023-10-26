@@ -65,6 +65,7 @@ class World {
         if (this.keyboard.D  && this.character.ammonition > 0) {
             this.checkThrowDirection();
             this.character.ammonition -= 1;
+            document.getElementById('ammoCounter').innerHTML = this.character.ammonition;
             console.log('ammo', this.character.ammonition);
             this.isBottleThrowing = true; 
             setTimeout(() => {

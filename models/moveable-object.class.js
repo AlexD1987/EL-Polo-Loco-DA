@@ -6,6 +6,7 @@ class MovableObject extends DrawableObject {
     acceleration = 2;
     lastHit = 0;
     ammonition = 0;
+    coins = 0;
 
 
     applyGravity() {
@@ -110,8 +111,10 @@ class MovableObject extends DrawableObject {
     collect(item) {
         if (item == 'bottle') {
             this.ammonition += 1;
+            document.getElementById('ammoCounter').innerHTML = this.ammonition;
         } else {
             this.coins += 1;
+            document.getElementById('coinCounter').innerHTML = this.coins;
         }
     }
 

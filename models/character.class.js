@@ -3,7 +3,6 @@ class Character extends MovableObject {
     height = 250;
     speed = 5;
     energy = 100;
-    coins = 0;
     sleepTimer = 5000;
 
     isMoving = false;
