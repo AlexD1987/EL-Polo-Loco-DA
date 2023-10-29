@@ -9,6 +9,15 @@ class StatusBar extends DrawableObject {
         'img/7_statusbars/1_statusbar/2_statusbar_health/green/100.png'
     ]
 
+    IMAGES_BOSS_HEALTH = [
+        'img/4_enemie_boss_chicken/_lifebar/eb_100.png',
+        'img/4_enemie_boss_chicken/_lifebar/eb_80.png',
+        'img/4_enemie_boss_chicken/_lifebar/eb_60.png',
+        'img/4_enemie_boss_chicken/_lifebar/eb_40.png',
+        'img/4_enemie_boss_chicken/_lifebar/eb_20.png',
+        'img/4_enemie_boss_chicken/_lifebar/eb_0.png'
+    ]
+
     IMAGES_COLLECTEBLES = [
         'img/7_statusbars/3_icons/icon_salsa_bottle.png',
         'img/7_statusbars/3_icons/icon_coin.png'
@@ -21,6 +30,7 @@ class StatusBar extends DrawableObject {
     constructor(type, x, y, width, height) {
         super();
         this.loadImages(this.IMAGES_HEALTH);
+        this.loadImages(this.IMAGES_BOSS_HEALTH);
         this.loadImages(this.IMAGES_COLLECTEBLES);
         this.x = x;
         this.y = y;
@@ -37,10 +47,14 @@ class StatusBar extends DrawableObject {
         } else if (type == 'coin') {
             let path = this.IMAGES_COLLECTEBLES[1];
             this.img = this.imageChache[path];
+        } else if (type == 'boss') {
+            let path = this.IMAGES_BOSS_HEALTH[0];
+            this.img = this.imageChache[path];
         } else {
             this.setPercentage(100);
         }
     }
+
 
 
     setPercentage(percentage) {

@@ -1,5 +1,7 @@
 class ThrowableObject extends MovableObject {
 
+    bottleHitEnemy = false;
+
     IMAGES_THROWING = [
         'img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png',
         'img/6_salsa_bottle/bottle_rotation/2_bottle_rotation.png',
@@ -40,16 +42,24 @@ class ThrowableObject extends MovableObject {
     }
 
 
+    setThrowState() {
+        this.bottleHitEnemy = true; 
+        setTimeout(() => {
+            this.bottleHitEnemy = false;
+        }, 500);
+    }
+
+
     setThrowDirection() {
         if (!world.characterFlipped) {
             setInterval(() => {
-                if (!world.hitEnemy) {
+                if (!world.hitEnemy || this.bottleHitEnemy) {
                     this.x += 10;
                 }
             }, 25);
         } else {
             setInterval(() => {
-                if (!world.hitEnemy) {
+                if (!world.hitEnemy || this.bottleHitEnemy) {
                     this.x -= 10;
                 }
             }, 25);

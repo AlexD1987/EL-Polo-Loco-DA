@@ -1,8 +1,10 @@
 class World {
     character = new Character();
+    endboss = new Endboss();
     statusBar = new StatusBar('health', 20, 0, 200, 50);
     ammoBar = new StatusBar('ammo', 5, 50, 70, 60);
     coinBar = new StatusBar('coin', 95, 50, 60, 60);
+    bossLife = new StatusBar('boss', this.endboss.x + 20, this.endboss.y, 120, 10);
     throwableObject = [];
     level = level1;
 
@@ -59,6 +61,11 @@ class World {
                 this.statusBar.setPercentage(this.character.energy);
             }
         });
+        if (this.character.isColliding(this.endboss)) {
+            this.character.hit();
+            console.log('lost energy', this.character.energy);
+            this.statusBar.setPercentage(this.character.energy);
+        }
     }
 
 
@@ -71,7 +78,7 @@ class World {
             this.isBottleThrowing = true; 
             setTimeout(() => {
                 this.isBottleThrowing = false;
-            }, 1200);
+            }, 1500);
             setTimeout
         }
     }
@@ -82,6 +89,7 @@ class World {
             let bottle = new ThrowableObject(this.character.x + 60, this.character.y + 100);
             this.throwableObject.push(bottle);
             this.checkEnemyHit();
+            this.checkBossHit();
             setInterval(() => {
                 if (this.hitEnemy) {
                     setTimeout(() => {
@@ -94,28 +102,44 @@ class World {
             let bottle = new ThrowableObject(this.character.x, this.character.y + 100);
             this.throwableObject.push(bottle);
             this.checkEnemyHit();
+            this.checkBossHit();
         }
     }
 
 
-    checkEnemyHit() {
+    checkBossHit() {
         setInterval(() => {
+            this.throwableObject.forEach((bottle) => {
+                if (bottle.isColliding(this.endboss)) {
+                    this.hitEnemy = true;
+                    console.log('hit boss');
+                    setTimeout(() => {
+                        this.hitEnemy = false;
+                    }, 500);
+                }
+            });
+        }, 400);
+    }
+
+
+    checkEnemyHit() {
+        const intervalId = setInterval(() => {
             world.level.enemies.forEach((enemy, index) => {
                 this.throwableObject.forEach((bottle) => {
                     if (bottle.isColliding(enemy)) {
-                        this.checkEnemyType(enemy, index);
+                        enemy.hitChicken(enemy, index);
                         this.hitEnemy = true;
                         console.log('hit');
                         setTimeout(() => {
                             this.hitEnemy = false;
                         }, 500);
+                        clearInterval(intervalId);
                     }
                 });
             });
-        }, 200);
+        }, 300);
     }
-
-
+    
     checkEnemyType(enemy, index) {
         if (enemy instanceof Enemy) {
             this.bottleHitEnemy = true;
@@ -125,6 +149,7 @@ class World {
             }, 1000);
         }
     }
+    
     
 
     collectAmmonition() {
@@ -165,9 +190,12 @@ class World {
 
         this.addToMap(this.character);
         this.addObjectsToMap(this.level.enemies);
+        this.addToMap(this.endboss);
+        this.addToMap(this.bossLife);
         this.addObjectsToMap(this.level.bottles);
         this.addObjectsToMap(this.level.coins);
         this.addObjectsToMap(this.throwableObject);
+
 
         this.ctx.translate(-this.camera_x, 0);
 
@@ -231,4 +259,8 @@ class World {
             this.characterPosition = this.character.position;
         }, 100);
     }
+
+
+    
+      
 }

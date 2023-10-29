@@ -6,6 +6,8 @@ class Endboss extends MovableObject {
     startFight;
 
     initEndboss = false;
+    attack = false;
+    direction = 1;
 
     IMAGES_WALKING = [
         'img/4_enemie_boss_chicken/1_walk/G1.png',
@@ -33,9 +35,6 @@ class Endboss extends MovableObject {
 
     IMAGES_ATTACK = [
         'img/4_enemie_boss_chicken/3_attack/G13.png',
-        'img/4_enemie_boss_chicken/3_attack/G14.png',
-        'img/4_enemie_boss_chicken/3_attack/G15.png',
-        'img/4_enemie_boss_chicken/3_attack/G16.png',
         'img/4_enemie_boss_chicken/3_attack/G17.png',
         'img/4_enemie_boss_chicken/3_attack/G18.png',
         'img/4_enemie_boss_chicken/3_attack/G19.png',
@@ -89,7 +88,9 @@ class Endboss extends MovableObject {
             if (i < 7 && this.startFight >= 5300) {
                 this.playAnimation(this.IMAGES_ALERT)
                 this.chickenAlarm();
-            } else {
+            } else  if (this.initEndboss) {
+                this.playAnimation(this.IMAGES_ATTACK); 
+            } else if (!this.initEndboss) {
                 this.playAnimation(this.IMAGES_WALKING);
             }
 
@@ -99,10 +100,30 @@ class Endboss extends MovableObject {
                 i = 0;
                 setTimeout(() => {
                     this.initEndboss = true;
+                    this.startBossFight();
                 }, 1700);
             }
         }, 200);
     }
+
+
+
+    startBossFight() {
+        setInterval(() => {
+            this.direction *= -1;
+            if (this.initEndboss) {
+                this.initEndboss = false;
+            } else {
+                this.initEndboss = true;
+            } // Ändere die Richtung (vorwärts zu rückwärts oder umgekehrt) alle 5 Sekunden
+        }, 4000); // Ändere die Richtung alle 5 Sekunden
+
+        setInterval(() => {
+            this.x -= 5 * this.direction; // Bewege den Charakter in der aktuellen Richtung
+        }, 800); // Alle 700 Millisekunden bewegen
+    }
+
+
 
 
     getFightPosition() {
