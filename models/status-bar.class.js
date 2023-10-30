@@ -10,12 +10,12 @@ class StatusBar extends DrawableObject {
     ]
 
     IMAGES_BOSS_HEALTH = [
-        'img/4_enemie_boss_chicken/_lifebar/eb_100.png',
-        'img/4_enemie_boss_chicken/_lifebar/eb_80.png',
-        'img/4_enemie_boss_chicken/_lifebar/eb_60.png',
-        'img/4_enemie_boss_chicken/_lifebar/eb_40.png',
-        'img/4_enemie_boss_chicken/_lifebar/eb_20.png',
-        'img/4_enemie_boss_chicken/_lifebar/eb_0.png'
+        'img/7_statusbars/2_statusbar_endboss/100.png',
+        'img/7_statusbars/2_statusbar_endboss/80.png',
+        'img/7_statusbars/2_statusbar_endboss/60.png',
+        'img/7_statusbars/2_statusbar_endboss/40.png',
+        'img/7_statusbars/2_statusbar_endboss/20.png',
+        'img/7_statusbars/2_statusbar_endboss/0.png'
     ]
 
     IMAGES_COLLECTEBLES = [
