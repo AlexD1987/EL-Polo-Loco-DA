@@ -4,7 +4,7 @@ class World {
     healthBar = new StatusBar('health', 20, 0, 200, 50);
     ammoBar = new StatusBar('ammo', 5, 50, 70, 60);
     coinBar = new StatusBar('coin', 95, 50, 60, 60);
-    bossLife = new StatusBar('boss', 500, 0, 120, 10);
+    bossLife = new StatusBar('boss', 500, 0, 200, 50);
     throwableObject = [];
     level = level1;
 
@@ -37,7 +37,8 @@ class World {
 
     checkStatus() {
         setInterval(() => {
-            this.checkCollision();
+            this.checkCharacterCollision();
+            this.checkBossCollision();
             this.collectAmmonition();
             this.collectCoins();
         }, 200);
@@ -53,19 +54,29 @@ class World {
     }
 
 
-    checkCollision() {
+    checkCharacterCollision() {
         this.level.enemies.forEach((enemy) => {
             if (this.character.isColliding(enemy)) {
                 this.character.hit();
                 console.log('lost energy', this.character.energy);
-                this.statusBar.setPercentage(this.character.energy);
+                this.healthBar.setPercentage(this.character.energy);
             }
         });
         if (this.character.isColliding(this.endboss)) {
             this.character.hit();
             console.log('lost energy', this.character.energy);
-            this.statusBar.setPercentage(this.character.energy);
+            this.healthBar.setPercentage(this.character.energy);
         }
+    }
+
+    checkBossCollision() {
+        world.throwableObject.forEach((bottle) => {
+            if (this.endboss.isColliding(bottle)) {
+                this.endboss.hit();
+                console.log('boss energy', this.endboss.energy);
+                this.bossLife.setBossPercentage(this.endboss.energy);
+            }
+        });
     }
 
 
@@ -140,6 +151,7 @@ class World {
         }, 300);
     }
     
+
     checkEnemyType(enemy, index) {
         if (enemy instanceof Enemy) {
             this.bottleHitEnemy = true;
@@ -151,7 +163,6 @@ class World {
     }
     
     
-
     collectAmmonition() {
         this.level.bottles.forEach((bottle, index) => {
             if (this.character.isColliding(bottle)) {
@@ -186,7 +197,7 @@ class World {
         this.addToMap(this.healthBar);
         this.addToMap(this.ammoBar);
         this.addToMap(this.coinBar);
-        if (this.characterPosition >= 4800) {
+        if (this.characterPosition >= 4900) {
             this.addToMap(this.bossLife);
         }
         this.ctx.translate(this.camera_x, 0);

@@ -10,12 +10,12 @@ class StatusBar extends DrawableObject {
     ]
 
     IMAGES_BOSS_HEALTH = [
-        'img/7_statusbars/2_statusbar_endboss/100.png',
-        'img/7_statusbars/2_statusbar_endboss/80.png',
-        'img/7_statusbars/2_statusbar_endboss/60.png',
-        'img/7_statusbars/2_statusbar_endboss/40.png',
+        'img/7_statusbars/2_statusbar_endboss/0.png',
         'img/7_statusbars/2_statusbar_endboss/20.png',
-        'img/7_statusbars/2_statusbar_endboss/0.png'
+        'img/7_statusbars/2_statusbar_endboss/40.png',
+        'img/7_statusbars/2_statusbar_endboss/60.png',
+        'img/7_statusbars/2_statusbar_endboss/80.png',
+        'img/7_statusbars/2_statusbar_endboss/100.png'
     ]
 
     IMAGES_COLLECTEBLES = [
@@ -25,6 +25,7 @@ class StatusBar extends DrawableObject {
 
     
     percentage = 100;
+    bossPercentage = 100;
 
 
     constructor(type, x, y, width, height) {
@@ -48,8 +49,7 @@ class StatusBar extends DrawableObject {
             let path = this.IMAGES_COLLECTEBLES[1];
             this.img = this.imageChache[path];
         } else if (type == 'boss') {
-            let path = this.IMAGES_BOSS_HEALTH[0];
-            this.img = this.imageChache[path];
+            this.setBossPercentage(100);
         } else {
             this.setPercentage(100);
         }
@@ -59,21 +59,27 @@ class StatusBar extends DrawableObject {
 
     setPercentage(percentage) {
         this.percentage = percentage;
-        let path = this.IMAGES_HEALTH[this.getImageIndex()];
+        let path = this.IMAGES_HEALTH[this.getImageIndex(percentage)];
+        this.img = this.imageChache[path];
+    }
+
+    setBossPercentage(percentage) {
+        this.bossPercentage = percentage;
+        let path = this.IMAGES_BOSS_HEALTH[this.getImageIndex(percentage)];
         this.img = this.imageChache[path];
     }
 
 
-    getImageIndex() {
-        if (this.percentage == 100) {
+    getImageIndex(percentage) {
+        if (percentage == 100) {
             return 5;
-        } else if (this.percentage > 80) {
+        } else if (percentage > 80) {
             return 4;
-        } else if (this.percentage > 60) {
+        } else if (percentage > 60) {
             return 3;
-        } else if (this.percentage > 40) {
+        } else if (percentage > 40) {
             return 2;
-        } else if (this.percentage > 5) {
+        } else if (percentage > 5) {
             return 1;
         } else {
             return 0;

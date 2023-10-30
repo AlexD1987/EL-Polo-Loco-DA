@@ -5,6 +5,7 @@ class Endboss extends MovableObject {
 
     startFight;
 
+    energy = 100;
     initEndboss = false;
     attack = false;
     reload = false;
