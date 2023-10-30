@@ -108,7 +108,6 @@ class Endboss extends MovableObject {
     }
 
 
-
     startBossFight() {
         setInterval(() => {
 
@@ -126,8 +125,6 @@ class Endboss extends MovableObject {
     }
 
 
-
-
     getFightPosition() {
         setTimeout(() => {
             setInterval(() => {
@@ -135,7 +132,6 @@ class Endboss extends MovableObject {
             }, 100);
         }, 1000);
     }
-
 
 
     chickenAlarm() {
