@@ -1,10 +1,10 @@
 class World {
     character = new Character();
     endboss = new Endboss();
-    statusBar = new StatusBar('health', 20, 0, 200, 50);
+    healthBar = new StatusBar('health', 20, 0, 200, 50);
     ammoBar = new StatusBar('ammo', 5, 50, 70, 60);
     coinBar = new StatusBar('coin', 95, 50, 60, 60);
-    bossLife = new StatusBar('boss', this.endboss.x + 20, this.endboss.y, 120, 10);
+    bossLife = new StatusBar('boss', 500, 0, 120, 10);
     throwableObject = [];
     level = level1;
 
@@ -183,15 +183,17 @@ class World {
         this.addObjectsToMap(this.level.clouds);
 
         this.ctx.translate(-this.camera_x, 0);
-        this.addToMap(this.statusBar);
+        this.addToMap(this.healthBar);
         this.addToMap(this.ammoBar);
         this.addToMap(this.coinBar);
+        if (this.characterPosition >= 4800) {
+            this.addToMap(this.bossLife);
+        }
         this.ctx.translate(this.camera_x, 0);
 
         this.addToMap(this.character);
         this.addObjectsToMap(this.level.enemies);
         this.addToMap(this.endboss);
-        this.addToMap(this.bossLife);
         this.addObjectsToMap(this.level.bottles);
         this.addObjectsToMap(this.level.coins);
         this.addObjectsToMap(this.throwableObject);
@@ -259,8 +261,6 @@ class World {
             this.characterPosition = this.character.position;
         }, 100);
     }
-
-
     
       
 }

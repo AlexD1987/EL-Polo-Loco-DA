@@ -110,18 +110,17 @@ class Endboss extends MovableObject {
 
     startBossFight() {
         setInterval(() => {
-
             if (this.reload) {
                 this.reload = false;
             } else {
                 this.reload = true;
                 this.direction *= -1;
-            } // Ändere die Richtung (vorwärts zu rückwärts oder umgekehrt) alle 5 Sekunden
-        }, 5000); // Ändere die Richtung alle 5 Sekunden
+            } 
+        }, 5000); 
 
         setInterval(() => {
-            this.x -= 5 * this.direction; // Bewege den Charakter in der aktuellen Richtung
-        }, 600); // Alle 700 Millisekunden bewegen
+            this.x -= 5 * this.direction;
+        }, 600);
     }
 
 
