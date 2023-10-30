@@ -7,6 +7,7 @@ class Endboss extends MovableObject {
 
     initEndboss = false;
     attack = false;
+    reload = false;
     direction = 1;
 
     IMAGES_WALKING = [
@@ -88,9 +89,9 @@ class Endboss extends MovableObject {
             if (i < 7 && this.startFight >= 5300) {
                 this.playAnimation(this.IMAGES_ALERT)
                 this.chickenAlarm();
-            } else  if (this.initEndboss) {
-                this.playAnimation(this.IMAGES_ATTACK); 
-            } else if (!this.initEndboss) {
+            } else if (!this.reload) {
+                this.playAnimation(this.IMAGES_ATTACK);
+            } else if (this.reload) {
                 this.playAnimation(this.IMAGES_WALKING);
             }
 
@@ -110,17 +111,18 @@ class Endboss extends MovableObject {
 
     startBossFight() {
         setInterval(() => {
-            this.direction *= -1;
-            if (this.initEndboss) {
-                this.initEndboss = false;
+
+            if (this.reload) {
+                this.reload = false;
             } else {
-                this.initEndboss = true;
+                this.reload = true;
+                this.direction *= -1;
             } // Ändere die Richtung (vorwärts zu rückwärts oder umgekehrt) alle 5 Sekunden
-        }, 4000); // Ändere die Richtung alle 5 Sekunden
+        }, 5000); // Ändere die Richtung alle 5 Sekunden
 
         setInterval(() => {
             this.x -= 5 * this.direction; // Bewege den Charakter in der aktuellen Richtung
-        }, 800); // Alle 700 Millisekunden bewegen
+        }, 600); // Alle 700 Millisekunden bewegen
     }
 
 
