@@ -1,13 +1,13 @@
 const level1 = new Level(
     [
-        /* new Enemy(1300),
+        new Enemy(1300),
         new Enemy(1800),
         new Enemy(2400),
         new Enemy(2900),
         new Enemy(3400),
         new Enemy(3900),
         new Enemy(4400),
-        new Enemy(4900) */
+        new Enemy(4900)
     ],
     [
         new Sun(),

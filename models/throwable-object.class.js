@@ -79,7 +79,7 @@ class ThrowableObject extends MovableObject {
                     soundPlayed = true;
                 }
             }
-        }, 50);
+        }, 20);
         this.throwingBottle(soundPlayed);
     }
 

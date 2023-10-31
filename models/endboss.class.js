@@ -126,7 +126,7 @@ class Endboss extends MovableObject {
                 this.reload = true;
                 this.direction *= -1;
             }
-        }, 5000);
+        }, 4500);
 
         setInterval(() => {
             if (!this.endbossDead) {

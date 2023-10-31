@@ -44,7 +44,8 @@ class World {
             this.collectAmmonition();
             this.collectCoins();
             this.checkBossDead();
-        }, 200);
+            this.checkJumpOnEnemy();
+        }, 100);
     }
 
 
@@ -64,15 +65,13 @@ class World {
 
     checkCharacterCollision() {
         this.level.enemies.forEach((enemy) => {
-            if (this.character.isColliding(enemy)) {
+            if (this.character.isColliding(enemy) && !this.hitEnemy) {
                 this.character.hit();
-                console.log('lost energy', this.character.energy);
                 this.healthBar.setPercentage(this.character.energy);
             }
         });
         if (this.character.isColliding(this.endboss) && !this.endBossDead) {
             this.character.hit();
-            console.log('lost energy', this.character.energy);
             this.healthBar.setPercentage(this.character.energy);
         }
     }
@@ -82,7 +81,6 @@ class World {
         world.throwableObject.forEach((bottle) => {
             if (this.endboss.isColliding(bottle)) {
                 this.endboss.hit();
-                console.log('boss energy', this.endboss.energy);
                 this.bossLife.setBossPercentage(this.endboss.energy);
             }
         });
@@ -94,7 +92,6 @@ class World {
             this.checkThrowDirection();
             this.character.ammonition -= 1;
             document.getElementById('ammoCounter').innerHTML = this.character.ammonition;
-            console.log('ammo', this.character.ammonition);
             this.isBottleThrowing = true;
             setTimeout(() => {
                 this.isBottleThrowing = false;
@@ -148,7 +145,6 @@ class World {
             this.throwableObject.forEach((bottle) => {
                 if (bottle.isColliding(this.endboss)) {
                     this.hitEnemy = true;
-                    console.log('hit boss');
                     setTimeout(() => {
                         this.hitEnemy = false;
                     }, 500);
@@ -165,7 +161,6 @@ class World {
                     if (bottle.isColliding(enemy)) {
                         enemy.hitChicken(enemy, index);
                         this.hitEnemy = true;
-                        console.log('hit');
                         setTimeout(() => {
                             this.hitEnemy = false;
                         }, 500);
@@ -174,6 +169,19 @@ class World {
                 });
             });
         }, 300);
+    }
+
+
+    checkJumpOnEnemy() {
+        world.level.enemies.forEach((enemy, index) => {
+            if (this.character.isColliding(enemy) && this.character.y > enemy.y) {
+                enemy.hitChicken(enemy, index);
+                this.hitEnemy = true;
+                setTimeout(() => {
+                    this.hitEnemy = false;
+                }, 500);
+            }
+        })
     }
 
 
@@ -192,7 +200,6 @@ class World {
         this.level.bottles.forEach((bottle, index) => {
             if (this.character.isColliding(bottle)) {
                 this.character.collect('bottle');
-                console.log('collect bottle', this.character.ammonition);
                 this.level.bottles.splice(index, 1);
                 this.collect_sound.play();
             }
@@ -234,16 +241,6 @@ class World {
     }
 
 
-    drawObjects() {
-        this.addToMap(this.character);
-        this.addObjectsToMap(this.level.enemies);
-        this.addToMap(this.endboss);
-        this.addObjectsToMap(this.level.bottles);
-        this.addObjectsToMap(this.level.coins);
-        this.addObjectsToMap(this.throwableObject);
-    }
-
-
     drawHud() {
         this.addToMap(this.healthBar);
         this.addToMap(this.ammoBar);
@@ -251,6 +248,16 @@ class World {
         if (this.characterPosition >= 5000) {
             this.addToMap(this.bossLife);
         }
+    }
+
+
+    drawObjects() {
+        this.addToMap(this.character);
+        this.addObjectsToMap(this.level.enemies);
+        this.addToMap(this.endboss);
+        this.addObjectsToMap(this.level.bottles);
+        this.addObjectsToMap(this.level.coins);
+        this.addObjectsToMap(this.throwableObject);
     }
 
 
