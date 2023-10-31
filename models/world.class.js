@@ -17,6 +17,8 @@ class World {
     characterFlipped = false;
     hitEnemy = false;
     bottleHitEnemy = false;
+    endBossDead = false;
+    enemyDead = false;
 
     collect_sound = new Audio('audio/collect.mp3');
 
@@ -41,11 +43,17 @@ class World {
             this.checkBossCollision();
             this.collectAmmonition();
             this.collectCoins();
+            this.checkBossDead();
         }, 200);
     }
 
 
-    checkThrowBottle () {
+    checkBossDead() {
+        this.endBossDead = this.endboss.setBossDead() === true;
+    }
+
+
+    checkThrowBottle() {
         setInterval(() => {
             if (!this.isBottleThrowing) {
                 this.checkThrowObject();
@@ -62,12 +70,13 @@ class World {
                 this.healthBar.setPercentage(this.character.energy);
             }
         });
-        if (this.character.isColliding(this.endboss)) {
+        if (this.character.isColliding(this.endboss) && !this.endBossDead) {
             this.character.hit();
             console.log('lost energy', this.character.energy);
             this.healthBar.setPercentage(this.character.energy);
         }
     }
+
 
     checkBossCollision() {
         world.throwableObject.forEach((bottle) => {
@@ -81,12 +90,12 @@ class World {
 
 
     checkThrowObject() {
-        if (this.keyboard.D  && this.character.ammonition > 0) {
+        if (this.keyboard.D && this.character.ammonition > 0) {
             this.checkThrowDirection();
             this.character.ammonition -= 1;
             document.getElementById('ammoCounter').innerHTML = this.character.ammonition;
             console.log('ammo', this.character.ammonition);
-            this.isBottleThrowing = true; 
+            this.isBottleThrowing = true;
             setTimeout(() => {
                 this.isBottleThrowing = false;
             }, 1500);
@@ -97,24 +106,40 @@ class World {
 
     checkThrowDirection() {
         if (!this.characterFlipped) {
-            let bottle = new ThrowableObject(this.character.x + 60, this.character.y + 100);
-            this.throwableObject.push(bottle);
-            this.checkEnemyHit();
-            this.checkBossHit();
-            setInterval(() => {
-                if (this.hitEnemy) {
-                    setTimeout(() => {
-                        this.throwableObject.splice(bottle);
-                    }, 200);
-                    
-                }
-            }, 1800);
+            this.throwRight();
         } else {
-            let bottle = new ThrowableObject(this.character.x, this.character.y + 100);
-            this.throwableObject.push(bottle);
-            this.checkEnemyHit();
-            this.checkBossHit();
+            this.throwLeft();
         }
+    }
+
+
+    throwRight() {
+        let bottle = new ThrowableObject(this.character.x + 60, this.character.y + 100);
+        this.throwableObject.push(bottle);
+        this.checkEnemyHit();
+        this.checkBossHit();
+        setInterval(() => {
+            if (this.hitEnemy) {
+                setTimeout(() => {
+                    this.throwableObject.splice(bottle);
+                }, 200);
+            }
+        }, 1800);
+    }
+
+
+    throwLeft() {
+        let bottle = new ThrowableObject(this.character.x, this.character.y + 100);
+        this.throwableObject.push(bottle);
+        this.checkEnemyHit();
+        this.checkBossHit();
+        setInterval(() => {
+            if (this.hitEnemy) {
+                setTimeout(() => {
+                    this.throwableObject.splice(bottle);
+                }, 200);
+            }
+        }, 1800);
     }
 
 
@@ -150,7 +175,7 @@ class World {
             });
         }, 300);
     }
-    
+
 
     checkEnemyType(enemy, index) {
         if (enemy instanceof Enemy) {
@@ -161,8 +186,8 @@ class World {
             }, 1000);
         }
     }
-    
-    
+
+
     collectAmmonition() {
         this.level.bottles.forEach((bottle, index) => {
             if (this.character.isColliding(bottle)) {
@@ -189,30 +214,13 @@ class World {
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.translate(this.camera_x, 0);
-
-        this.addObjectsToMap(this.level.backgroundObjects);
-        this.addObjectsToMap(this.level.clouds);
-
+        this.drawWorld();
         this.ctx.translate(-this.camera_x, 0);
-        this.addToMap(this.healthBar);
-        this.addToMap(this.ammoBar);
-        this.addToMap(this.coinBar);
-        if (this.characterPosition >= 4900) {
-            this.addToMap(this.bossLife);
-        }
+        this.drawHud();
         this.ctx.translate(this.camera_x, 0);
-
-        this.addToMap(this.character);
-        this.addObjectsToMap(this.level.enemies);
-        this.addToMap(this.endboss);
-        this.addObjectsToMap(this.level.bottles);
-        this.addObjectsToMap(this.level.coins);
-        this.addObjectsToMap(this.throwableObject);
-
-
+        this.drawObjects();
         this.ctx.translate(-this.camera_x, 0);
 
-        // Draw wird immer wieder aufgerufen
         let self = this;
         requestAnimationFrame(function () {
             self.draw();
@@ -220,11 +228,37 @@ class World {
     }
 
 
+    drawWorld() {
+        this.addObjectsToMap(this.level.backgroundObjects);
+        this.addObjectsToMap(this.level.clouds);
+    }
+
+
+    drawObjects() {
+        this.addToMap(this.character);
+        this.addObjectsToMap(this.level.enemies);
+        this.addToMap(this.endboss);
+        this.addObjectsToMap(this.level.bottles);
+        this.addObjectsToMap(this.level.coins);
+        this.addObjectsToMap(this.throwableObject);
+    }
+
+
+    drawHud() {
+        this.addToMap(this.healthBar);
+        this.addToMap(this.ammoBar);
+        this.addToMap(this.coinBar);
+        if (this.characterPosition >= 5000) {
+            this.addToMap(this.bossLife);
+        }
+    }
+
+
     setWorld() {
         this.character.world = this;
     }
 
-    
+
     addObjectsToMap(object) {
         object.forEach(o => {
             this.addToMap(o);
@@ -272,6 +306,4 @@ class World {
             this.characterPosition = this.character.position;
         }, 100);
     }
-    
-      
 }

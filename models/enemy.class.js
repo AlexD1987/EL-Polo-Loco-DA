@@ -52,4 +52,11 @@ class Enemy extends MovableObject {
             }, 1000);
         }
     }
+
+
+    setEnemyDead() {
+        if (this.dead) {
+            return true;
+        }
+    }
 }

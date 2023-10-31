@@ -69,7 +69,6 @@ class ThrowableObject extends MovableObject {
 
     bottleAnimation() {
         let soundPlayed = false;
-
         setInterval(() => {
             if (!world.hitEnemy) {
                 this.playAnimation(this.IMAGES_THROWING);
@@ -81,7 +80,6 @@ class ThrowableObject extends MovableObject {
                 }
             }
         }, 50);
-
         this.throwingBottle(soundPlayed);
     }
 

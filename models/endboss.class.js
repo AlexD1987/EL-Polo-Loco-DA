@@ -9,6 +9,7 @@ class Endboss extends MovableObject {
     initEndboss = false;
     attack = false;
     reload = false;
+    endbossDead = false;
     direction = 1;
 
     IMAGES_WALKING = [
@@ -87,14 +88,7 @@ class Endboss extends MovableObject {
     animate() {
         let i = 0;
         setInterval(() => {
-            if (i < 7 && this.startFight >= 5300) {
-                this.playAnimation(this.IMAGES_ALERT)
-                this.chickenAlarm();
-            } else if (!this.reload) {
-                this.playAnimation(this.IMAGES_ATTACK);
-            } else if (this.reload) {
-                this.playAnimation(this.IMAGES_WALKING);
-            }
+            this.handleAnimation(i);
 
             i++;
 
@@ -109,6 +103,21 @@ class Endboss extends MovableObject {
     }
 
 
+    handleAnimation(i) {
+        if (i < 7 && this.startFight >= 5300) {
+            this.playAnimation(this.IMAGES_ALERT)
+            this.chickenAlarm();
+        } else if (this.energy === 0) {
+            this.playAnimation(this.IMAGES_DEAD);
+            this.endbossDead = true;
+        } else if (!this.reload) {
+            this.playAnimation(this.IMAGES_ATTACK);
+        } else if (this.reload) {
+            this.playAnimation(this.IMAGES_WALKING);
+        }
+    }
+
+
     startBossFight() {
         setInterval(() => {
             if (this.reload) {
@@ -116,11 +125,13 @@ class Endboss extends MovableObject {
             } else {
                 this.reload = true;
                 this.direction *= -1;
-            } 
-        }, 5000); 
+            }
+        }, 5000);
 
         setInterval(() => {
-            this.x -= 5 * this.direction;
+            if (!this.endbossDead) {
+                this.x -= 5 * this.direction;
+            }
         }, 600);
     }
 
@@ -143,6 +154,13 @@ class Endboss extends MovableObject {
             setTimeout(() => {
                 this.alarm_sound.pause();
             }, 1220);
+        }
+    }
+
+
+    setBossDead() {
+        if (this.endbossDead) {
+            return true;
         }
     }
 }
