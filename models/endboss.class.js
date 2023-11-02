@@ -10,6 +10,7 @@ class Endboss extends MovableObject {
     attack = false;
     reload = false;
     endbossDead = false;
+    screamPlayed = false;
     direction = 1;
 
     IMAGES_WALKING = [
@@ -60,6 +61,7 @@ class Endboss extends MovableObject {
     ]
 
     alarm_sound = new Audio('audio/alarm.mp3');
+    dead_sound = new Audio('audio/boss_scream.mp3');
 
 
     constructor() {
@@ -112,17 +114,18 @@ class Endboss extends MovableObject {
 
 
     /**
-     * Handle the animation based on the current frame index and game state.
-     * Play specific animations for various conditions, such as showing an alert, indicating death, attacking, or walking.
-     * @param {number} i - The current frame index for animation control.
+     * Handle character animation based on the provided conditions and index.
+     * Animations may include alert, death, attack, or walking animations.
+     * @param {number} i - The animation index used for decision making.
      */
     handleAnimation(i) {
         if (i < 7 && this.startFight >= 5300) {
             this.playAnimation(this.IMAGES_ALERT);
             this.chickenAlarm();
         } else if (this.energy === 0) {
-            this.playAnimation(this.IMAGES_DEAD);
             this.endbossDead = true;
+            this.playAnimation(this.IMAGES_DEAD);
+            this.checkDeadSoundPlayed();
         } else if (!this.reload) {
             this.playAnimation(this.IMAGES_ATTACK);
         } else if (this.reload) {
@@ -146,7 +149,7 @@ class Endboss extends MovableObject {
         }, 4500);
 
         setInterval(() => {
-            if (!this.endbossDead) {
+            if (!this.endbossDead && !this.endbossDead) {
                 this.x -= 5 * this.direction;
             }
         }, 600);
@@ -180,6 +183,17 @@ class Endboss extends MovableObject {
                 this.alarm_sound.pause();
             }, 1220);
         }
+    }
+
+
+    /**
+     * Check if the dead sound has been played, and play it if not already played.
+     */
+    checkDeadSoundPlayed() {
+        if (!this.screamPlayed) {
+            this.dead_sound.play();
+        }
+        this.screamPlayed = true;
     }
 
 

@@ -29,6 +29,8 @@ class Enemy extends MovableObject {
         this.moveLeft();
     }
 
+    chickenScream = new Audio('audio/single_screem.mp3');
+
 
     /**
      * Animate the object by playing the walking animation if it is not dead.
@@ -43,16 +45,17 @@ class Enemy extends MovableObject {
 
 
     /**
-     * Handle a collision with an enemy (chicken).
-     * If the collision is with an enemy object, set the object's state to hitten and dead, play the dead animation, stop its speed,
-     * and remove it from the list of enemies after a delay.
-     * @param {Enemy} enemy - The enemy object with which the collision occurred.
-     * @param {number} index - The index of the enemy object in the list of enemies.
+     * Handle hitting an enemy chicken.
+     * If the provided enemy is an instance of the 'Enemy' class, the character gets hit,
+     * plays a hit animation, and removes the enemy from the level.
+     * @param {Enemy} enemy - The enemy chicken being hit.
+     * @param {number} index - The index of the enemy in the level.
      */
     hitChicken(enemy, index) {
         if (enemy instanceof Enemy) {
             this.hitten = true;
             this.dead = true;
+            this.chickenScream.play();
             setInterval(() => {
                 this.playAnimation(this.IMAGES_DEAD);
             }, 20);

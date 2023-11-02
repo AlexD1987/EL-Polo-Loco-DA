@@ -13,6 +13,7 @@ class World {
     ctx;
     camera_x = 0;
     characterPosition;
+    loopMusic = false;
     isBottleThrowing = false;
     characterFlipped = false;
     hitEnemy = false;
@@ -22,6 +23,7 @@ class World {
 
     background_music = new Audio('audio/background_music.mp3');
     collect_sound = new Audio('audio/collect.mp3');
+    tumble_sound = new Audio('audio/tumbleweed.mp3');
 
 
     constructor(canvas, keyboard) {
@@ -36,17 +38,36 @@ class World {
         this.collectCoins();
         this.checkCharacterPosition();
         this.checkJumpOnEnemy();
+        this.startBackgroundMusic();
     }
 
 
     checkStatus() {
         setInterval(() => {
+            this.checkObjectSounds();
             this.checkCharacterCollision();
             this.checkBossCollision();
             this.collectAmmonition();
             this.collectCoins();
             this.checkBossDead();
         }, 200);
+    }
+
+
+    startBackgroundMusic() {
+        this.background_music.play();
+        setTimeout(() => {
+            this.startBackgroundMusic();
+        }, 40500);
+    }
+
+
+    checkObjectSounds() {
+        this.level.movingBackground.forEach((tumble) => {
+            if (tumble instanceof Tumble && this.character.isColliding(tumble)) {
+                this.tumble_sound.play();
+            }
+        })
     }
 
 
@@ -122,7 +143,7 @@ class World {
                     this.throwableObject.splice(bottle);
                 }, 200);
             }
-        }, 1800);
+        }, 1500);
     }
 
 
@@ -131,14 +152,13 @@ class World {
         this.throwableObject.push(bottle);
         this.checkEnemyBottleHit();
         this.checkBossHit();
-
         setInterval(() => {
             if (this.hitEnemy) {
                 setTimeout(() => {
                     this.throwableObject.splice(bottle);
                 }, 200);
             }
-        }, 1800);
+        }, 1500);
     }
 
 
@@ -187,7 +207,7 @@ class World {
                     setTimeout(() => {
                         this.hitEnemy = false;
                         this.enemyDead = false;
-                    }, 1500);
+                    }, 1000);
                     this.character.y = 170;
                 }
             });
@@ -247,7 +267,7 @@ class World {
 
     drawWorld() {
         this.addObjectsToMap(this.level.backgroundObjects);
-        this.addObjectsToMap(this.level.clouds);
+        this.addObjectsToMap(this.level.movingBackground);
     }
 
 
@@ -273,7 +293,6 @@ class World {
 
     setWorld() {
         this.character.world = this;
-        this.background_music.play();
     }
 
 
