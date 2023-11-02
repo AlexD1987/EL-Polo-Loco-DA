@@ -13,19 +13,22 @@ class Tumble extends MovableObject {
     constructor(x) {
         super().loadImage('img/5_background/layers/tumble1.png');
         this.loadImages(this.IMAGES_ROTATE);
-        
+
         this.x = x;
-        
+
         this.speed = 1.4 + Math.random() * 0.5;
 
         this.animate();
         this.moveLeft();
     }
 
+    
+    /**
+     * Animate the object by repeatedly playing a rotation animation.
+     */
     animate() {
         setInterval(() => {
             this.playAnimation(this.IMAGES_ROTATE);
         }, 70);
     }
-    
 }

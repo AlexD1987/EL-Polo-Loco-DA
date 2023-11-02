@@ -20,6 +20,7 @@ class World {
     endBossDead = false;
     enemyDead = false;
 
+    background_music = new Audio('audio/background_music.mp3');
     collect_sound = new Audio('audio/collect.mp3');
 
 
@@ -34,6 +35,7 @@ class World {
         this.collectAmmonition();
         this.collectCoins();
         this.checkCharacterPosition();
+        this.checkJumpOnEnemy();
     }
 
 
@@ -44,8 +46,7 @@ class World {
             this.collectAmmonition();
             this.collectCoins();
             this.checkBossDead();
-            this.checkJumpOnEnemy();
-        }, 100);
+        }, 200);
     }
 
 
@@ -59,13 +60,13 @@ class World {
             if (!this.isBottleThrowing) {
                 this.checkThrowObject();
             }
-        }, 200);
+        }, 100);
     }
 
 
     checkCharacterCollision() {
         this.level.enemies.forEach((enemy) => {
-            if (this.character.isColliding(enemy) && !this.hitEnemy) {
+            if (this.character.isColliding(enemy) && !this.hitEnemy && !this.enemyDead && !this.character.isOverGround()) {
                 this.character.hit();
                 this.healthBar.setPercentage(this.character.energy);
             }
@@ -113,7 +114,7 @@ class World {
     throwRight() {
         let bottle = new ThrowableObject(this.character.x + 60, this.character.y + 100);
         this.throwableObject.push(bottle);
-        this.checkEnemyHit();
+        this.checkEnemyBottleHit();
         this.checkBossHit();
         setInterval(() => {
             if (this.hitEnemy) {
@@ -128,8 +129,9 @@ class World {
     throwLeft() {
         let bottle = new ThrowableObject(this.character.x, this.character.y + 100);
         this.throwableObject.push(bottle);
-        this.checkEnemyHit();
+        this.checkEnemyBottleHit();
         this.checkBossHit();
+
         setInterval(() => {
             if (this.hitEnemy) {
                 setTimeout(() => {
@@ -144,9 +146,9 @@ class World {
         setInterval(() => {
             this.throwableObject.forEach((bottle) => {
                 if (bottle.isColliding(this.endboss)) {
-                    this.hitEnemy = true;
+                    this.bottleHitEnemy = true;
                     setTimeout(() => {
-                        this.hitEnemy = false;
+                        this.bottleHitEnemy = false;
                     }, 500);
                 }
             });
@@ -154,16 +156,18 @@ class World {
     }
 
 
-    checkEnemyHit() {
+    checkEnemyBottleHit() {
         const intervalId = setInterval(() => {
             world.level.enemies.forEach((enemy, index) => {
                 this.throwableObject.forEach((bottle) => {
                     if (bottle.isColliding(enemy)) {
                         enemy.hitChicken(enemy, index);
-                        this.hitEnemy = true;
+                        this.bottleHitEnemy = true;
+                        this.enemyDead = enemy.setEnemyDead();
                         setTimeout(() => {
-                            this.hitEnemy = false;
-                        }, 500);
+                            this.bottleHitEnemy = false;
+                            this.enemyDead = false;
+                        }, 1000);
                         clearInterval(intervalId);
                     }
                 });
@@ -173,15 +177,21 @@ class World {
 
 
     checkJumpOnEnemy() {
-        world.level.enemies.forEach((enemy, index) => {
-            if (this.character.isColliding(enemy) && this.character.y > enemy.y) {
-                enemy.hitChicken(enemy, index);
-                this.hitEnemy = true;
-                setTimeout(() => {
-                    this.hitEnemy = false;
-                }, 500);
-            }
-        })
+        setInterval(() => {
+            this.level.enemies.forEach((enemy, index) => {
+                if (this.character.isColliding(enemy) && this.character.isOverGround() && !this.enemyDead && this.character.speedY < 0) {
+                    this.enemyDead = true;
+                    this.hitEnemy = true;
+                    enemy.hitChicken(enemy, index);
+                    this.character.jump();
+                    setTimeout(() => {
+                        this.hitEnemy = false;
+                        this.enemyDead = false;
+                    }, 1500);
+                    this.character.y = 170;
+                }
+            });
+        }, 100);
     }
 
 
@@ -263,6 +273,7 @@ class World {
 
     setWorld() {
         this.character.world = this;
+        this.background_music.play();
     }
 
 

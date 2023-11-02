@@ -10,6 +10,10 @@ class Cloud extends MovableObject {
         this.animate();
     }
 
+    
+    /**
+     * Animate the object by moving it to the left at a constant rate.
+     */
     animate() {
         setInterval(() => {
             this.x -= 0.07;

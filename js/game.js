@@ -3,13 +3,22 @@ let canvas;
 let world;
 let keyboard = new Keyboard();
 
+
+/**
+ * Initialize the game.
+ * Set up the canvas and create a new World instance with keyboard input.
+ */
 function init() {
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);
+};
 
-    
-}
 
+/**
+ * Event listener for keydown events.
+ * Detects specific key presses and updates the keyboard object accordingly.
+ * @param {Event} event - The keydown event object.
+ */
 document.addEventListener('keydown', (event) => {
     if (event.keyCode == 39) {
         keyboard.RIGHT = true;
@@ -32,6 +41,11 @@ document.addEventListener('keydown', (event) => {
 });
 
 
+/**
+ * Event listener for keyup events.
+ * Detects specific key releases and updates the keyboard object accordingly.
+ * @param {Event} event - The keyup event object.
+ */
 document.addEventListener('keyup', (event) => {
     if (event.keyCode == 39) {
         keyboard.RIGHT = false;

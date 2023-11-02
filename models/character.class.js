@@ -86,7 +86,7 @@ class Character extends MovableObject {
     jumping_sound = new Audio('audio/jump.mp3');
     hurt_sound = new Audio('audio/hurt.mp3');
     dead_sound = new Audio('audio/dead.mp3');
-    
+
 
     constructor() {
         super().loadImage('img/2_character_pepe/1_idle/idle/I-1.png');
@@ -104,6 +104,9 @@ class Character extends MovableObject {
     }
 
 
+    /**
+     * Initialize the level by setting the startLevel flag after a delay.
+     */
     initLevel() {
         setTimeout(() => {
             this.startLevel = true;
@@ -111,9 +114,13 @@ class Character extends MovableObject {
     }
 
 
+    /**
+     * Animate the object by handling various game states and animations.
+     */
     animate() {
         this.handleMovement();
 
+        // Check and perform actions at specific intervals
         setInterval(() => {
             this.checkJumpAnimation();
             this.checkSleepTimer();
@@ -131,13 +138,20 @@ class Character extends MovableObject {
     }
 
 
+    /**
+    * Set the character's position by updating it at regular intervals.
+    */
     setCharacterPosition() {
         setInterval(() => {
             this.position = this.x;
-        }, 500);   
+        }, 500);
     }
 
 
+    /**
+     * Check if the sleep animation should be played based on the waiting time and sleep timer.
+     * If conditions are met, play the sleeping animation and associated sounds.
+     */
     checkSleepAnimation() {
         if (this.waitingTime > this.sleepTimer) {
             this.sleepTime = true;
@@ -148,6 +162,10 @@ class Character extends MovableObject {
     }
 
 
+    /**
+     * Check if the waiting animation should be played based on movement and sleep state.
+     * If conditions are met, play the waiting animation, pause walking sound, and start sleep timer.
+     */
     checkWaitAnimation() {
         if (!this.isMoving && !this.sleepTime) {
             this.walking_sound.pause();
@@ -158,6 +176,9 @@ class Character extends MovableObject {
     }
 
 
+    /**
+     * Check and perform jump or walking animations based on movement and ground state.
+     */
     checkJumpAnimation() {
         if (this.isOverGround() && this.startLevel) {
             if (!this.jumpingSoundPlayed) {
@@ -176,6 +197,10 @@ class Character extends MovableObject {
     }
 
 
+    /**
+     * Check and handle the hurt state of the object.
+     * If hurt and not dead, play the hurt animation, hurt sound, pause snoring, and reset the sleep timer.
+     */
     checkHurtState() {
         if (this.isHurt() && !this.isDead()) {
             this.playAnimation(this.IMAGES_HURT);
@@ -186,6 +211,10 @@ class Character extends MovableObject {
     }
 
 
+    /**
+     * Check and handle the dead state of the object.
+     * If dead, play the dead animation, start dead animation actions, pause walking sound, and reset sleep timer.
+     */
     checkDeadState() {
         if (this.isDead()) {
             this.playAnimation(this.IMAGES_DEAD);
@@ -202,24 +231,34 @@ class Character extends MovableObject {
                 if (event.keyCode == 32) {
                     keyboard.SPACE = false;
                 }
-            })
+            });
             this.resetSleepTimer();
         }
     }
 
 
+    /**
+     * Start the dead animation of the object.
+     * Play the dead sound, pause it after 2.5 seconds, and gradually move the object downward.
+     */
     startDeadAnimation() {
         this.dead_sound.play();
         setTimeout(() => {
             this.dead_sound.pause();
             this.dead_sound.currentTime = 0;
         }, 2500);
+
+        // Gradually move the object downward
         setInterval(() => {
             this.y += 2;
-        }, 1000 / 40);;
+        }, 1000 / 40);
     }
 
 
+    /**
+     * Handle the movement and actions of the object.
+     * Check for jumping or movement direction and update camera position.
+     */
     handleMovement() {
         setInterval(() => {
             if (this.world.keyboard.SPACE && !this.isOverGround()) {
@@ -234,6 +273,10 @@ class Character extends MovableObject {
     }
 
 
+    /**
+     * Handle the movement direction of the object based on keyboard input.
+     * Move the object right if the RIGHT key is pressed, left if the LEFT key is pressed, or stop moving if neither is pressed.
+     */
     handleMoveDirection() {
         if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
             this.mainCharacterMoveRight();
@@ -249,6 +292,10 @@ class Character extends MovableObject {
     }
 
 
+    /**
+     * Start a sleep timer if it is not already active.
+     * If not already started, set the `waitTime` flag to true and record the start time.
+     */
     startSleepTimer() {
         if (!this.waitTime) {
             this.waitTime = true;
@@ -257,6 +304,9 @@ class Character extends MovableObject {
     }
 
 
+    /**
+     * Check and update the sleep timer, calculating the waiting time if it is active.
+     */
     checkSleepTimer() {
         if (this.waitTime) {
             this.endWait = Date.now();
@@ -265,6 +315,9 @@ class Character extends MovableObject {
     }
 
 
+    /**
+     * Reset the sleep timer and related flags and variables.
+     */
     resetSleepTimer() {
         this.startWait = 0;
         this.endWait = 0;

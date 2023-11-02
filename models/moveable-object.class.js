@@ -9,6 +9,9 @@ class MovableObject extends DrawableObject {
     coins = 0;
 
 
+    /**
+     * Apply gravity to the object's vertical position over time.
+     */
     applyGravity() {
         setInterval(() => {
             if (this.isOverGround() || this.speedY > 0) {
@@ -19,6 +22,10 @@ class MovableObject extends DrawableObject {
     }
 
 
+    /**
+     * Check if the object is above the ground.
+     * @returns {boolean} True if the object is above the ground, otherwise false.
+     */
     isOverGround() {
         if (this instanceof ThrowableObject) {
             return true;
@@ -28,6 +35,10 @@ class MovableObject extends DrawableObject {
     }
 
 
+    /**
+     * Play an animation using the provided images.
+     * @param {string} image - An array of image paths for the animation.
+     */
     playAnimation(image) {
         let i = this.currentImage % image.length;
         let path = image[i];
@@ -36,6 +47,9 @@ class MovableObject extends DrawableObject {
     }
 
 
+    /**
+     * Move the object to the left continuously at a constant speed.
+     */
     moveLeft() {
         setInterval(() => {
             this.x -= this.speed;
@@ -43,16 +57,21 @@ class MovableObject extends DrawableObject {
     }
 
 
+    /**
+     * Move the main character to the right.
+     */
     mainCharacterMoveRight() {
         this.x += this.speed;
         this.otherDirection = false;
         this.isMoving = true;
         this.snoring_sound.pause();
         world.characterFlipped = false;
-        
     }
 
 
+    /**
+     * Move the main character to the left.
+     */
     mainCharacterMoveLeft() {
         this.x -= this.speed;
         this.otherDirection = true;
@@ -62,6 +81,9 @@ class MovableObject extends DrawableObject {
     }
 
 
+    /**
+     * Flip the throw direction in the game world based on the character's orientation.
+     */
     flipThrowDirection() {
         if (!world.characterFlipped) {
             setTimeout(() => {
@@ -75,6 +97,9 @@ class MovableObject extends DrawableObject {
     }
 
 
+    /**
+     * Make the object jump by adjusting its vertical speed and waking it up.
+     */
     jump() {
         this.speedY = 23;
         this.sleepTime = false;
@@ -82,14 +107,11 @@ class MovableObject extends DrawableObject {
     }
 
 
-    playAnimation(image) {
-        let i = this.currentImage % image.length;
-        let path = image[i];
-        this.img = this.imageChache[path];
-        this.currentImage++;
-    }
-
-
+    /**
+     * Check if the object is colliding with the specified enemy object.
+     * @param {Object} enemy - The enemy object to check for collision with.
+     * @returns {boolean} True if a collision is detected, otherwise false.
+     */
     isColliding(enemy) {
         return this.x + this.width > enemy.x &&
             this.y + this.height > enemy.y &&
@@ -98,6 +120,9 @@ class MovableObject extends DrawableObject {
     }
 
 
+    /**
+     * Reduce the object's energy by 5. If energy goes below 0, set it to 0. Update the last hit timestamp.
+     */
     hit() {
         this.energy -= 5;
         if (this.energy < 0) {
@@ -108,8 +133,12 @@ class MovableObject extends DrawableObject {
     }
 
 
+    /**
+     * Collect an item and update the corresponding counter on the webpage.
+     * @param {string} item - The item to collect, either 'bottle' or other.
+     */
     collect(item) {
-        if (item == 'bottle') {
+        if (item === 'bottle') {
             this.ammonition += 1;
             document.getElementById('ammoCounter').innerHTML = this.ammonition;
         } else {
@@ -119,6 +148,10 @@ class MovableObject extends DrawableObject {
     }
 
 
+    /**
+     * Check if the object is in a hurt state within the last second.
+     * @returns {boolean} True if the object is in a hurt state within the last second, otherwise false.
+     */
     isHurt() {
         let timePassed = new Date().getTime() - this.lastHit;
         timePassed = timePassed / 1000;
@@ -126,9 +159,11 @@ class MovableObject extends DrawableObject {
     }
 
 
+    /**
+     * Check if the object is dead (has zero energy).
+     * @returns {boolean} True if the object is dead (has zero energy), otherwise false.
+     */
     isDead() {
-        return this.energy == 0;
+        return this.energy === 0;
     }
-
-
 }

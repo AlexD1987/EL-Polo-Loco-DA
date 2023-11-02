@@ -77,6 +77,10 @@ class Endboss extends MovableObject {
     }
 
 
+    /**
+     * Initialize the animation for the object.
+     * After a delay of 1500 milliseconds, start the animation and obtain the fight position.
+     */
     initAnimation() {
         setTimeout(() => {
             this.animate();
@@ -85,6 +89,10 @@ class Endboss extends MovableObject {
     }
 
 
+    /**
+     * Animate the object and control the animation flow.
+     * Advance the animation frame and handle special events, such as starting the end boss fight.
+     */
     animate() {
         let i = 0;
         setInterval(() => {
@@ -92,7 +100,7 @@ class Endboss extends MovableObject {
 
             i++;
 
-            if (this.startFight >= 5300 & !this.initEndboss) {
+            if (this.startFight >= 5300 && !this.initEndboss) {
                 i = 0;
                 setTimeout(() => {
                     this.initEndboss = true;
@@ -103,9 +111,14 @@ class Endboss extends MovableObject {
     }
 
 
+    /**
+     * Handle the animation based on the current frame index and game state.
+     * Play specific animations for various conditions, such as showing an alert, indicating death, attacking, or walking.
+     * @param {number} i - The current frame index for animation control.
+     */
     handleAnimation(i) {
         if (i < 7 && this.startFight >= 5300) {
-            this.playAnimation(this.IMAGES_ALERT)
+            this.playAnimation(this.IMAGES_ALERT);
             this.chickenAlarm();
         } else if (this.energy === 0) {
             this.playAnimation(this.IMAGES_DEAD);
@@ -118,6 +131,10 @@ class Endboss extends MovableObject {
     }
 
 
+    /**
+     * Start the boss fight sequence for the object.
+     * Set up intervals for reloading and changing direction, as well as controlling boss movement.
+     */
     startBossFight() {
         setInterval(() => {
             if (this.reload) {
@@ -136,6 +153,10 @@ class Endboss extends MovableObject {
     }
 
 
+    /**
+     * Retrieve the fight position of the object relative to the character's position.
+     * Set up an interval to periodically update the fight position based on the character's position.
+     */
     getFightPosition() {
         setTimeout(() => {
             setInterval(() => {
@@ -145,6 +166,10 @@ class Endboss extends MovableObject {
     }
 
 
+    /**
+     * Trigger a chicken alarm sound effect.
+     * Play the alarm sound effect once and pause it after a specified duration.
+     */
     chickenAlarm() {
         let soundPlayed = false;
 
@@ -158,6 +183,10 @@ class Endboss extends MovableObject {
     }
 
 
+    /**
+     * Check if the boss character is in a dead state.
+     * @returns {boolean} True if the boss character is dead, otherwise false.
+     */
     setBossDead() {
         if (this.endbossDead) {
             return true;
