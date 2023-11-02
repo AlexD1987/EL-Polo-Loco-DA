@@ -5,13 +5,49 @@ let keyboard = new Keyboard();
 
 
 /**
- * Initialize the game.
- * Set up the canvas and create a new World instance with keyboard input.
+ * Initializes the game by setting up the canvas and starting the game world.
  */
 function init() {
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);
-};
+    start();
+}
+
+
+/**
+ * Initiates the game by hiding the start screen and beginning end game checks.
+ */
+function start() {
+    document.getElementById('startScreen').classList.add('d-none');
+    checkEndGame();
+}
+
+
+/**
+ * Periodically checks and updates the end game screen based on game status. 
+ * Also, removes keyboard event listeners when the game is won.
+ */
+function checkEndGame() {
+    setInterval(() => {
+        if (world.wonGame) {
+            document.getElementById('endScreenWon').classList.remove('d-none');
+            addEventListener('keydown', (event) => {
+                if (event.keyCode == 39) {
+                    keyboard.RIGHT = false;
+                }
+                if (event.keyCode == 37) {
+                    keyboard.LEFT = false;
+                }
+                if (event.keyCode == 32) {
+                    keyboard.SPACE = false;
+                }
+            });
+        }
+        if (world.lostGame) {
+            document.getElementById('endScreenLost').classList.remove('d-none');
+        }
+    }, 100);
+}
 
 
 /**

@@ -7,7 +7,7 @@ class DrawableObject {
     imageChache = {};
     currentImage = 0;
 
-    
+
     /**
      * Loads an image from the specified path.
      * @param {string} path - The path to the image to load.
@@ -37,20 +37,5 @@ class DrawableObject {
      */
     draw(ctx) {
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
-    }
-
-
-    /**
-     * Draws a frame around the object if it's a Character, Enemy, or Endboss.
-     * @param {CanvasRenderingContext2D} ctx - The 2D rendering context to draw on.
-     */
-    drawFrame(ctx) {
-        if (this instanceof Character || this instanceof Enemy || this instanceof Endboss) {
-            ctx.beginPath();
-            ctx.lineWidth = "3";
-            ctx.strokeStyle = "red";
-            ctx.rect(this.x, this.y, this.width, this.height);
-            ctx.stroke();
-        }
     }
 }

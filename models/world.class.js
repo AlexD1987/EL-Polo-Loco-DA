@@ -21,6 +21,8 @@ class World {
     bottleHitBoss = false;
     endBossDead = false;
     enemyDead = false;
+    wonGame = false;
+    lostGame = false;
 
     background_music = new Audio('audio/background_music.mp3');
     collect_sound = new Audio('audio/collect.mp3');
@@ -40,6 +42,22 @@ class World {
         this.checkCharacterPosition();
         this.checkJumpOnEnemy();
         this.startBackgroundMusic();
+        this.checkGameStatus();
+    }
+
+
+    /**
+     * Periodically checks the game's status, such as whether the player has won or lost.
+     */
+    checkGameStatus() {
+        setInterval(() => {
+            if (world.character.energy === 0) {
+                this.lostGame = true;
+            }
+            if (world.endboss.energy === 0) {
+                this.wonGame = true;
+            }
+        }, 100);
     }
 
 
@@ -441,7 +459,6 @@ class World {
             this.flipImage(mo);
         }
         mo.draw(this.ctx);
-        mo.drawFrame(this.ctx);
 
         if (mo.otherDirection) {
             this.flipBack(mo);
