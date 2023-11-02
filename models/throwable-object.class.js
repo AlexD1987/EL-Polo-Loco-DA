@@ -34,7 +34,6 @@ class ThrowableObject extends MovableObject {
         this.throw();
     }
 
-    
     /**
      * Perform a throw action.
      * Set the vertical speed, apply gravity, trigger bottle animation, and determine the throw direction.
@@ -88,7 +87,7 @@ class ThrowableObject extends MovableObject {
     bottleAnimation() {
         let soundPlayed = false;
         setInterval(() => {
-            if (world.bottleHitEnemy || this.y > 300) {
+            if (world.bottleHitEnemy || world.bottleHitBoss || this.y > 300) {
                 this.playAnimation(this.IMAGES_SPLASH);
                 if (!soundPlayed) {
                     this.hit_sound.play();

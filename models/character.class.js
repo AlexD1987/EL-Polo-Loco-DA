@@ -120,7 +120,6 @@ class Character extends MovableObject {
     animate() {
         this.handleMovement();
 
-        // Check and perform actions at specific intervals
         setInterval(() => {
             this.checkJumpAnimation();
             this.checkSleepTimer();

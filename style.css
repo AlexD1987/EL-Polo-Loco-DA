@@ -10,12 +10,19 @@
 body {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
     font-family: 'Smokum';
     align-items: center;
     background-image: url('img/5_background/start_screen.png');
 }
 
+#startScreen {
+    display: none;
+}
+
 h1 {
+    text-align: center;
     font-size: 64px;
     text-shadow: 4px 4px lightgray;
     letter-spacing: 4px;
@@ -32,14 +39,50 @@ canvas {
     border: 2px solid black;
 }
 
+.hud {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    position: absolute;
+    width: 720px;
+    height: 480px;
+    margin-bottom: 16px;
+}
+
 .counter {
     font-size: 24px;
-    position: absolute;
-    margin-top: -305px;
+    margin-top: 36px;
     display: flex;
     width: 110px;
     justify-content: space-between;
     padding-left: 64px;
+}
+
+.buttons {
+    width: 100%;
+    display: flex;
+    
+    align-items: flex-end;
+    
+    justify-content: space-between;
+}
+
+.singleBtnSection {
+    width: 150px;
+    margin-left: 32px;
+    margin-right: 32px;
+    display: flex;
+    justify-content: space-between;
+}
+
+button {
+    background: none;
+	color: inherit;
+	border: none;
+	padding: 0;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
 }
 
 #startScreen {
@@ -47,20 +90,44 @@ canvas {
 }
 
 @media (max-width: 720px) {
-    canvas {
+    body {
         width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 0;
+        margin-bottom: 0;
     }
-    .counter {
-        margin-top: -42%;
-        padding-left: 9%;
-        width: 16%;
-        font-size: 150%;
+
+    .hud {
+        width: 100%;
+        padding-left: 0;
+        padding-right: 0;
+    }
+    
+    canvas {
+        width: 99.5%;
+        height: 99.5%;
+    }
+
+    .singleBtnSection {
+        width: 120px;
     }
 }
 
 @media (max-height: 480px) {
-    canvas {
+    .main {
         height: 100vh;
+    }
+    
+    .hud {
+        height: 100%;
+        width: 85%;
+    }
+
+    .counter {
+        margin-top: 20px;
+        width: 90px;
+        padding-left: 48px;
     }
 
     h1 {

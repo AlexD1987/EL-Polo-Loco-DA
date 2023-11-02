@@ -16,10 +16,13 @@ class Sun extends MovableObject {
         this.animate();
     }
 
+
+    /**
+     * Initiates an animation loop by repeatedly playing a sequence of images.
+     */
     animate() {
         setInterval(() => {
             this.playAnimation(this.IMAGES_ANIMATION);
         }, 600);
     }
-
 }

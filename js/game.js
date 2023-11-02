@@ -56,9 +56,6 @@ document.addEventListener('keyup', (event) => {
     if (event.keyCode == 38) {
         keyboard.UP = false;
     }
-    if (event.keyCode == 40) {
-        keyboard.DOWN = false;
-    }
     if (event.keyCode == 32) {
         keyboard.SPACE = false;
     }
@@ -66,3 +63,56 @@ document.addEventListener('keyup', (event) => {
         keyboard.D = false;
     }
 });
+
+
+/**
+ * Add touch event listeners to control character movement and actions using on-screen buttons.
+ * - Registers touchstart and touchend events for right, left, jump, and throw buttons.
+ * - Prevents default touch behavior to avoid unintended scrolling.
+ * - Updates the 'keyboard' object properties to control character actions.
+ */
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('btnRight').addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        keyboard.RIGHT = true;
+    });
+
+    document.getElementById('btnRight').addEventListener('touchend', (e) => {
+        e.preventDefault();
+        keyboard.RIGHT = false;
+    });
+
+    document.getElementById('btnLeft').addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        keyboard.LEFT = true;
+    });
+
+    document.getElementById('btnLeft').addEventListener('touchend', (e) => {
+        e.preventDefault();
+        keyboard.LEFT = false;
+    });
+
+    document.getElementById('btnJump').addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        keyboard.SPACE = true;
+    });
+
+    document.getElementById('btnJump').addEventListener('touchend', (e) => {
+        e.preventDefault();
+        keyboard.SPACE = false;
+    });
+
+    document.getElementById('btnThrow').addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        keyboard.D = true;
+    });
+
+    document.getElementById('btnThrow').addEventListener('touchend', (e) => {
+        e.preventDefault();
+        keyboard.D = false;
+    });
+});
+
+
+
+
