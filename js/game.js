@@ -3,7 +3,7 @@ let canvas;
 let world;
 let keyboard = new Keyboard();
 
-playBackgroundmusic = false;
+mute = false;
 
 background_music = new Audio('audio/background_music.mp3');
 
@@ -24,8 +24,8 @@ function init() {
 function start() {
     document.getElementById('startScreen').classList.add('d-none');
     checkEndGame();
-    playBackgroundMusic = true;
     startBackgroundMusic();
+    muteSoundByEndGame();
 }
 
 
@@ -44,16 +44,25 @@ function checkScreenRotation() {
 
 
 /**
- * Starts playing the background music if enabled and restarts it after 40.2 seconds.
+ * Periodically checks the game's sound state and mutes it if conditions are met.
+ */
+function muteSoundByEndGame() {
+    setInterval(() => {
+        if (world.setSoundState()) {
+            setTimeout(() => {
+                muteSound();
+            }, 1000);
+        }
+    }, 100);
+}
+
+
+/**
+ * Starts playing the background music.
  */
 function startBackgroundMusic() {
-    if (this.playBackgroundMusic) {
-        this.background_music.volume = 0.5;
-        this.background_music.play();
-        setTimeout(() => {
-            this.startBackgroundMusic();
-        }, 41000); // Restarts the music after 40.2 seconds
-    }
+    background_music.volume = 0.5;
+    background_music.play();
 }
 
 
@@ -187,5 +196,38 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
+/**
+ * Mutes the background music and other world sounds.
+ */
+function muteSound() {
+    background_music.pause();
+    world.muteSound();
+}
+
+
+/**
+ * Unmutes the background music and other world sounds.
+ */
+function unmuteSound() {
+    background_music.play();
+    world.unmuteSound();
+}
+
+
+/**
+ * Toggles the in-game sound on and off and updates the UI button accordingly.
+ */
+function toggleSound() {
+    let toggleBtn = document.getElementById('soundToggle');
+    if (!mute) {
+        mute = true;
+        muteSound();
+        toggleBtn.src = './img/10_buttons/unmute.png';
+    } else {
+        mute = false;
+        unmuteSound();
+        toggleBtn.src = './img/10_buttons/mute.png';
+    }
+}
 
 

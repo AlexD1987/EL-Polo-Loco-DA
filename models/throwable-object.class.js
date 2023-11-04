@@ -1,6 +1,7 @@
 class ThrowableObject extends MovableObject {
 
     bottleHitEnemy = false;
+    mute = false;
 
     IMAGES_THROWING = [
         'img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png',
@@ -89,7 +90,7 @@ class ThrowableObject extends MovableObject {
         setInterval(() => {
             if (world.bottleHitEnemy || world.bottleHitBoss || this.y > 300) {
                 this.playAnimation(this.IMAGES_SPLASH);
-                if (!soundPlayed) {
+                if (!soundPlayed && !world.mute) {
                     this.hit_sound.play();
                     soundPlayed = true;
                 }
@@ -108,7 +109,7 @@ class ThrowableObject extends MovableObject {
      */
     throwingBottle(soundPlayed) {
         setInterval(() => {
-            if (!soundPlayed) {
+            if (!soundPlayed && !world.mute) {
                 this.whip_sound.play();
                 soundPlayed = true;
                 setTimeout(() => {

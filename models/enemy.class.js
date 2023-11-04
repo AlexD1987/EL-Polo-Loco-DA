@@ -5,6 +5,7 @@ class Enemy extends MovableObject {
 
     hitten = false;
     dead = false;
+    mute = false;
 
     IMAGES_WALKING = [
         'img/3_enemies_chicken/chicken_normal/1_walk/1_w.png',
@@ -23,7 +24,7 @@ class Enemy extends MovableObject {
 
         this.x = x;
 
-        this.speed = 0.15 + Math.random() * 0.2;
+        this.speed = 0.15 + Math.random() * 0.4;
 
         this.animate();
         this.moveLeft();
@@ -56,7 +57,9 @@ class Enemy extends MovableObject {
             this.hitten = true;
             this.dead = true;
             this.chickenScream.volume = 0.5;
-            this.chickenScream.play();
+            if (!world.mute) {
+                this.chickenScream.play();
+            }
             setInterval(() => {
                 this.playAnimation(this.IMAGES_DEAD);
             }, 20);
@@ -65,7 +68,7 @@ class Enemy extends MovableObject {
                 world.level.enemies.splice(index, 1);
                 this.hitten = false;
                 this.dead = false;
-            }, 1000);
+            }, 400);
         }
     }
 

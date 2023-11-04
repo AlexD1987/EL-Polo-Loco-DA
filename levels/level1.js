@@ -6,12 +6,12 @@ const level1 = new Level(
         new Enemy(1800),
         new Enemy(2100),
         new Enemy(2400),
-        new Enemy(2900),
-        new Enemy(3400),
-        new Enemy(3900),
-        new Enemy(4100),
-        new Enemy(4400),
-        new Enemy(4900)
+        new Enemy(2700),
+        new Enemy(3800),
+        new Enemy(4200),
+        new Enemy(4500),
+        new Enemy(5000),
+        new Enemy(5400)
     ],
     [
         new Sun(),

@@ -33,7 +33,7 @@
         <button id="startBtn" onclick="init()">
             <img src="./img/10_buttons/start.png" alt="">
         </button>
-        <img class="startImg"  src="./img/9_intro_outro_screens/start/startscreen_1.png" alt="">
+        <img class="startImg" src="./img/9_intro_outro_screens/start/startscreen_1.png" alt="">
     </div>
     <div id="endScreenWon" class="d-none">
         <button class="reload" onClick="window.location.reload();">
@@ -55,9 +55,14 @@
         <canvas id="canvas" width="720" height="480">
         </canvas>
         <div class="hud">
-            <div class="counter">
-                <h2 id="ammoCounter">0</h2>
-                <h2 id="coinCounter">0</h2>
+            <div class="upperSection">
+                <div class="counter">
+                    <h2 id="ammoCounter">0</h2>
+                    <h2 id="coinCounter">0</h2>
+                </div>
+                <div class="muteSwitch">
+                    <img id="soundToggle" src="./img/10_buttons/mute.png" onclick="toggleSound()">
+                </div>
             </div>
             <div class="buttons">
                 <div class="singleBtnSection">

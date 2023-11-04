@@ -22,8 +22,9 @@ class World {
     enemyDead = false;
     wonGame = false;
     lostGame = false;
+    mute = false;
 
-    
+
     collect_sound = new Audio('audio/collect.mp3');
     tumble_sound = new Audio('audio/tumbleweed.mp3');
 
@@ -46,14 +47,21 @@ class World {
 
     /**
      * Periodically checks the game's status, such as whether the player has won or lost.
+     * If the game ends, it also mutes the in-game sound after a delay.
      */
     checkGameStatus() {
         setInterval(() => {
             if (world.character.energy === 0) {
                 this.lostGame = true;
+                setTimeout(() => {
+                    this.muteSound();
+                }, 2000);
             }
             if (world.endboss.energy === 0) {
                 this.wonGame = true;
+                setTimeout(() => {
+                    this.muteSound();
+                }, 2000);
             }
         }, 100);
     }
@@ -88,8 +96,10 @@ class World {
     checkObjectSounds() {
         this.level.movingBackground.forEach((tumble) => {
             if (tumble instanceof Tumble && this.character.isColliding(tumble)) {
-                this.tumble_sound.volume = 0.3;
-                this.tumble_sound.play();
+                if (!this.mute) {
+                    this.tumble_sound.volume = 0.3;
+                    this.tumble_sound.play();
+                }
             }
         });
     }
@@ -197,6 +207,7 @@ class World {
     throwRight() {
         let bottle = new ThrowableObject(this.character.x + 60, this.character.y + 100);
         this.throwableObject.push(bottle);
+        this.character.resetSleepTimer();
         this.checkEnemyBottleHit();
         this.checkBossHit();
         setTimeout(() => {
@@ -298,7 +309,7 @@ class World {
                     setTimeout(() => {
                         this.hitEnemy = false;
                         this.enemyDead = false;
-                    }, 1000);
+                    }, 500);
                     this.character.y = 170;
                 }
             });
@@ -335,7 +346,9 @@ class World {
             if (this.character.isColliding(bottle)) {
                 this.character.collect('bottle');
                 this.level.bottles.splice(index, 1);
-                this.collect_sound.play();
+                if (!this.mute) {
+                    this.collect_sound.play();
+                }
             }
         });
     }
@@ -351,7 +364,9 @@ class World {
             if (this.character.isColliding(coin)) {
                 this.character.collect('coin');
                 this.level.coins.splice(index, 1);
-                this.collect_sound.play();
+                if (!this.mute) {
+                    this.collect_sound.play();
+                }
             }
         });
     }
@@ -494,5 +509,32 @@ class World {
         setInterval(() => {
             this.characterPosition = this.character.position;
         }, 100);
+    }
+
+
+    /**
+     * Mutes the in-game sound.
+     */
+    muteSound() {
+        this.mute = true;
+    }
+
+
+    /**
+     * Unmutes the in-game sound.
+     */
+    unmuteSound() {
+        this.mute = false;
+    }
+
+
+    /**
+     * Checks and returns the sound state, indicating whether it's muted.
+     * @returns {boolean} True if sound is muted, otherwise false.
+     */
+    setSoundState() {
+        if (this.mute) {
+            return true;
+        }
     }
 }

@@ -3,7 +3,7 @@ class Character extends MovableObject {
     height = 250;
     speed = 5;
     energy = 100;
-    sleepTimer = 5000;
+    sleepTimer = 12;
 
     canPlayJumpSound = true;
     isMoving = false;
@@ -12,7 +12,7 @@ class Character extends MovableObject {
     jumpingSoundPlayed = false;
     waitTime = false;
     gameOver = false;
-
+    mute = false;
     world;
     startWait;
     endWait;
@@ -129,7 +129,7 @@ class Character extends MovableObject {
         setInterval(() => {
             this.checkHurtState();
             this.checkSleepAnimation();
-        }, 350);
+        }, 200);
 
         setInterval(() => {
             this.checkWaitAnimation();
@@ -156,8 +156,10 @@ class Character extends MovableObject {
         if (this.waitingTime > this.sleepTimer) {
             this.sleepTime = true;
             this.playAnimation(this.IMAGES_SLEEPING);
-            this.snoring_sound.volume = 0.5;
-            this.snoring_sound.play();
+            if (!this.world.mute) {
+                this.snoring_sound.volume = 0.4;
+                this.snoring_sound.play();
+            }
             this.jumpingSoundPlayed = false;
         }
     }
@@ -184,7 +186,10 @@ class Character extends MovableObject {
         if (this.isOverGround() && this.startLevel) {
             this.handleJumpAnimation();
         } else if (this.isMoving) {
-            this.walking_sound.play();
+            if (!this.world.mute) {
+                this.walking_sound.play();
+            }
+
             this.playAnimation(this.IMAGES_WALKING);
             this.jumpingSoundPlayed = false;
             this.resetSleepTimer();
@@ -198,8 +203,10 @@ class Character extends MovableObject {
     handleJumpAnimation() {
         if (!this.jumpingSoundPlayed && this.canPlayJumpSound) {
             this.jumpingSoundPlayed = true;
-            this.jumping_sound.volume = 0.5;
-            this.jumping_sound.play();
+            if (!this.world.mute) {
+                this.jumping_sound.volume = 0.5;
+                this.jumping_sound.play();
+            }
             this.canPlayJumpSound = false;
             setTimeout(() => {
                 this.canPlayJumpSound = true;
@@ -218,7 +225,9 @@ class Character extends MovableObject {
     checkHurtState() {
         if (this.isHurt() && !this.isDead()) {
             this.playAnimation(this.IMAGES_HURT);
-            this.hurt_sound.play();
+            if (!this.world.mute) {
+                this.hurt_sound.play();
+            }
             this.snoring_sound.pause();
             this.resetSleepTimer();
         }
@@ -259,7 +268,9 @@ class Character extends MovableObject {
      * Play the dead sound, pause it after 2.5 seconds, and gradually move the object downward.
      */
     startDeadAnimation() {
-        this.dead_sound.play();
+        if (!this.world.mute) {
+            this.dead_sound.play();
+        }
         setTimeout(() => {
             this.dead_sound.pause();
             this.dead_sound.currentTime = 0;

@@ -12,6 +12,7 @@ class Endboss extends MovableObject {
     endbossDead = false;
     screamPlayed = false;
     direction = 1;
+    mute = false; 
 
     IMAGES_WALKING = [
         'img/4_enemie_boss_chicken/1_walk/G1.png',
@@ -176,7 +177,7 @@ class Endboss extends MovableObject {
     chickenAlarm() {
         let soundPlayed = false;
 
-        if (!soundPlayed) {
+        if (!soundPlayed && !world.mute) {
             this.alarm_sound.volume = 0.75;
             this.alarm_sound.play();
             soundPlayed = true;
@@ -191,7 +192,7 @@ class Endboss extends MovableObject {
      * Check if the dead sound has been played, and play it if not already played.
      */
     checkDeadSoundPlayed() {
-        if (!this.screamPlayed) {
+        if (!this.screamPlayed && !world.mute) {
             this.dead_sound.play();
         }
         this.screamPlayed = true;
