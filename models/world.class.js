@@ -529,11 +529,11 @@ class World {
 
 
     /**
-     * Checks and returns the sound state, indicating whether it's muted.
-     * @returns {boolean} True if sound is muted, otherwise false.
+     * Checks and returns the sound state, indicating whether it should be muted based on game outcome.
+     * @returns {boolean} True if sound should be muted, otherwise false.
      */
     setSoundState() {
-        if (this.mute) {
+        if (this.lostGame || this.wonGame) {
             return true;
         }
     }

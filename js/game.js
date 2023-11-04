@@ -209,7 +209,7 @@ function muteSound() {
  * Unmutes the background music and other world sounds.
  */
 function unmuteSound() {
-    background_music.play();
+    startBackgroundMusic();
     world.unmuteSound();
 }
 
