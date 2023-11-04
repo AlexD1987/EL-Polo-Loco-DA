@@ -23,7 +23,7 @@ class Enemy extends MovableObject {
 
         this.x = x;
 
-        this.speed = 0.15 + Math.random() * 0.1;
+        this.speed = 0.15 + Math.random() * 0.25;
 
         this.animate();
         this.moveLeft();
@@ -55,6 +55,7 @@ class Enemy extends MovableObject {
         if (enemy instanceof Enemy) {
             this.hitten = true;
             this.dead = true;
+            this.chickenScream.volume = 0.5;
             this.chickenScream.play();
             setInterval(() => {
                 this.playAnimation(this.IMAGES_DEAD);

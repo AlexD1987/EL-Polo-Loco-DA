@@ -13,7 +13,6 @@ class World {
     ctx;
     camera_x = 0;
     characterPosition;
-    loopMusic = false;
     isBottleThrowing = false;
     characterFlipped = false;
     hitEnemy = false;
@@ -24,7 +23,7 @@ class World {
     wonGame = false;
     lostGame = false;
 
-    background_music = new Audio('audio/background_music.mp3');
+    
     collect_sound = new Audio('audio/collect.mp3');
     tumble_sound = new Audio('audio/tumbleweed.mp3');
 
@@ -41,7 +40,6 @@ class World {
         this.collectCoins();
         this.checkCharacterPosition();
         this.checkJumpOnEnemy();
-        this.startBackgroundMusic();
         this.checkGameStatus();
     }
 
@@ -83,19 +81,6 @@ class World {
 
 
     /**
-     * Start playing background music and set it to repeat after a specific duration.
-     * - Starts playing the background music.
-     * - Sets a timeout to restart the background music after a specified duration (40.2 seconds).
-     */
-    startBackgroundMusic() {
-        this.background_music.play();
-        setTimeout(() => {
-            this.startBackgroundMusic();
-        }, 40200); // Restarts the music after 40.2 seconds
-    }
-
-
-    /**
      * Check for collisions between the character and certain objects and trigger sounds.
      * - Iterates through moving background objects in the level.
      * - If the character collides with a Tumble object, plays a specific sound (e.g., tumble sound).
@@ -103,6 +88,7 @@ class World {
     checkObjectSounds() {
         this.level.movingBackground.forEach((tumble) => {
             if (tumble instanceof Tumble && this.character.isColliding(tumble)) {
+                this.tumble_sound.volume = 0.3;
                 this.tumble_sound.play();
             }
         });
@@ -316,7 +302,7 @@ class World {
                     this.character.y = 170;
                 }
             });
-        }, 100);
+        }, 50);
     }
 
 

@@ -5,6 +5,7 @@ class Character extends MovableObject {
     energy = 100;
     sleepTimer = 5000;
 
+    canPlayJumpSound = true;
     isMoving = false;
     sleepTime = false;
     overGround = false;
@@ -155,6 +156,7 @@ class Character extends MovableObject {
         if (this.waitingTime > this.sleepTimer) {
             this.sleepTime = true;
             this.playAnimation(this.IMAGES_SLEEPING);
+            this.snoring_sound.volume = 0.5;
             this.snoring_sound.play();
             this.jumpingSoundPlayed = false;
         }
@@ -176,23 +178,36 @@ class Character extends MovableObject {
 
 
     /**
-     * Check and perform jump or walking animations based on movement and ground state.
+     * Checks and handles the character's jump animation based on their current state.
      */
     checkJumpAnimation() {
         if (this.isOverGround() && this.startLevel) {
-            if (!this.jumpingSoundPlayed) {
-                this.jumping_sound.play();
-                this.jumpingSoundPlayed = true;
-                this.resetSleepTimer();
-            }
-            this.walking_sound.pause();
-            this.playAnimation(this.IMAGES_JUMP);
+            this.handleJumpAnimation();
         } else if (this.isMoving) {
             this.walking_sound.play();
             this.playAnimation(this.IMAGES_WALKING);
             this.jumpingSoundPlayed = false;
             this.resetSleepTimer();
         }
+    }
+
+
+    /**
+     * Handles the character's jump animation and plays jump sound if conditions are met.
+     */
+    handleJumpAnimation() {
+        if (!this.jumpingSoundPlayed && this.canPlayJumpSound) {
+            this.jumpingSoundPlayed = true;
+            this.jumping_sound.volume = 0.5;
+            this.jumping_sound.play();
+            this.canPlayJumpSound = false;
+            setTimeout(() => {
+                this.canPlayJumpSound = true;
+            }, 1800);
+            this.resetSleepTimer();
+        }
+        this.walking_sound.pause();
+        this.playAnimation(this.IMAGES_JUMP);
     }
 
 
@@ -229,6 +244,9 @@ class Character extends MovableObject {
                 }
                 if (event.keyCode == 32) {
                     keyboard.SPACE = false;
+                }
+                if (event.keyCode == 68) {
+                    keyboard.D = false;
                 }
             });
             this.resetSleepTimer();

@@ -1,11 +1,15 @@
 const level1 = new Level(
     [
-        new Enemy(1300),
+        new Enemy(900),
+        new Enemy(1200),
+        new Enemy(1500),
         new Enemy(1800),
+        new Enemy(2100),
         new Enemy(2400),
         new Enemy(2900),
         new Enemy(3400),
         new Enemy(3900),
+        new Enemy(4100),
         new Enemy(4400),
         new Enemy(4900)
     ],
@@ -23,12 +27,15 @@ const level1 = new Level(
         new Bottle(850),
         new Bottle(950),
         new Bottle(1050),
+        new Bottle(1500),
         new Bottle(2000),
         new Bottle(2100),
         new Bottle(2200),
+        new Bottle(3000),
         new Bottle(3500),
         new Bottle(3600),
         new Bottle(3700),
+        new Bottle(4100),
         new Bottle(4500),
         new Bottle(4600),
         new Bottle(4700)

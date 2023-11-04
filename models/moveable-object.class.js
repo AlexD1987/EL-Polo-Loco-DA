@@ -108,15 +108,15 @@ class MovableObject extends DrawableObject {
 
 
     /**
-     * Check if the object is colliding with the specified enemy object.
-     * @param {Object} enemy - The enemy object to check for collision with.
+     * Checks if the current object is colliding with another object, considering offsets.
+     * @param {GameObject} mo - The object to check for collision.
      * @returns {boolean} True if a collision is detected, otherwise false.
      */
-    isColliding(enemy) {
-        return this.x + this.width > enemy.x &&
-            this.y + this.height > enemy.y &&
-            this.x < enemy.x + enemy.width &&
-            this.y < enemy.y + enemy.height;
+    isColliding(mo) {
+        return (this.x + this.width - this.offsetRight) >= (mo.x + mo.offsetLeft) &&
+            (this.x - this.offsetLeft) <= (mo.x + mo.width - mo.offsetRight) &&
+            (this.y + this.height - this.offsetBottom) >= (mo.y + mo.offsetTop) &&
+            (this.y + this.offsetTop) <= (mo.y + mo.height - mo.offsetBottom);
     }
 
 

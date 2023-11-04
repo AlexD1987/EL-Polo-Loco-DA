@@ -3,6 +3,10 @@ let canvas;
 let world;
 let keyboard = new Keyboard();
 
+playBackgroundmusic = false;
+
+background_music = new Audio('audio/background_music.mp3');
+
 
 /**
  * Initializes the game by setting up the canvas and starting the game world.
@@ -20,6 +24,36 @@ function init() {
 function start() {
     document.getElementById('startScreen').classList.add('d-none');
     checkEndGame();
+    playBackgroundMusic = true;
+    startBackgroundMusic();
+}
+
+
+/**
+ * Periodically checks and updates the visibility of an element based on screen orientation.
+ */
+function checkScreenRotation() {
+    setInterval(() => {
+        if (window.innerHeight > window.innerWidth) {
+            document.getElementById('checkOrientation').classList.remove('d-none');
+        } else {
+            document.getElementById('checkOrientation').classList.add('d-none');
+        }
+    }, 25);
+}
+
+
+/**
+ * Starts playing the background music if enabled and restarts it after 40.2 seconds.
+ */
+function startBackgroundMusic() {
+    if (this.playBackgroundMusic) {
+        this.background_music.volume = 0.5;
+        this.background_music.play();
+        setTimeout(() => {
+            this.startBackgroundMusic();
+        }, 41000); // Restarts the music after 40.2 seconds
+    }
 }
 
 
@@ -40,6 +74,9 @@ function checkEndGame() {
                 }
                 if (event.keyCode == 32) {
                     keyboard.SPACE = false;
+                }
+                if (event.keyCode == 68) {
+                    keyboard.D = false;
                 }
             });
         }

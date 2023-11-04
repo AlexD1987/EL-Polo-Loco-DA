@@ -6,6 +6,10 @@ class DrawableObject {
     img;
     imageChache = {};
     currentImage = 0;
+    offsetTop = 25;
+    offsetRight = 35;
+    offsetBottom = -20;
+    offsetLeft = 10;
 
 
     /**

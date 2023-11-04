@@ -177,6 +177,7 @@ class Endboss extends MovableObject {
         let soundPlayed = false;
 
         if (!soundPlayed) {
+            this.alarm_sound.volume = 0.75;
             this.alarm_sound.play();
             soundPlayed = true;
             setTimeout(() => {
